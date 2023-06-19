@@ -16,11 +16,11 @@ return new class extends Migration
             $table->timestamps();
 
             $table->string('title');
-            $table->text('description');
+            $table->string('description');
             $table->integer('progress');
             $table->integer('count');
 
-            // $table->foreignId('topic_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('topic_id')->constrained()->cascadeOnDelete();
         });
     }
 

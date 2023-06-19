@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('flashcards', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
 
-            $table->string('name');
+            $table->string('question');
+            $table->string('answer');
+            $table->integer('times_viewed');
+            $table->integer('times_answered');
+            $table->timestamp('last_viewed')->nullable();
 
-            // $table->foreignId('topic_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('deck_id')->constrained()->cascadeOnDelete();
         });
     }
 
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('flashcards');
     }
 };

@@ -11,17 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('flashcards', function (Blueprint $table) {
+        Schema::create('collections', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
 
-            $table->text('question');
-            $table->text('answer');
-            $table->integer('times_viewed');
-            $table->integer('times_answered');
-            $table->timestamp('last_viewed')->nullable();
-
-            // $table->foreignId('deck_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('topic_id')->constrained()->cascadeOnDelete();
         });
     }
 
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('flashcards');
+        Schema::dropIfExists('collections');
     }
 };
