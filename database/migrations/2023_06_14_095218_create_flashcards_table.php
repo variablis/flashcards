@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('answer');
             $table->integer('times_viewed')->default(0);
             $table->integer('times_answered')->default(0);
+            $table->boolean('last_answer')->default(0);
             $table->timestamp('last_viewed')->nullable();
 
             $table->foreignId('deck_id')->constrained()->cascadeOnDelete();

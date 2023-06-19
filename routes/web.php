@@ -43,6 +43,8 @@ Route::resource('flashcards', FlashcardController::class)
     ->only(['index', 'store'])
     ->middleware(['auth', 'verified']);
 
+Route::put('flashcard/{id}', [FlashcardController::class, 'update'])->name('flashcard.update');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

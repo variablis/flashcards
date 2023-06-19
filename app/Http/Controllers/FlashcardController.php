@@ -63,7 +63,13 @@ class FlashcardController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $f = Flashcard::findOrFail($id);
+        $f->times_answered = $request->r_times_answered;
+        $f->times_viewed = $request->r_times_viewed;
+        $f->last_answer = $request->r_last_answer;
+        $f->last_viewed = now()->toDateTimeString();
+        $f->save();
+        // return $id;
     }
 
     /**
