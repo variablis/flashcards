@@ -15,6 +15,22 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('topics.index')" :active="request()->routeIs('topics.index')">
+                        {{ __('Topics') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('decks.index')" :active="request()->routeIs('decks.index')">
+                        {{ __('Decks') }}
+                    </x-nav-link>
+              
+                    <x-nav-link :href="route('flashcards.index')" :active="request()->routeIs('flashcards.index')">
+                        {{ __('Flashcards') }}
+                    </x-nav-link>
+             
+                    <x-nav-link :href="route('welc')" :active="request()->routeIs('welc')">
+                        {{ __('Explore') }}
+                    </x-nav-link>
                 </div>
             </div>
 

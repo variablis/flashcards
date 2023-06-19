@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('count');
 
             $table->foreignId('topic_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('tag_id')->constrained();
         });
     }
 

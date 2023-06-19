@@ -21,22 +21,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
+            TagSeeder::class,
+            CategorySeeder::class,
         ]);
 
-        // $this->call([
-        //     TopicSeeder::class,
-        // ]);
-
-        // $this->call([
-        //     DeckSeeder::class,
-        // ]);
-
-        // $this->call([
-        //     FlashcardSeeder::class,
-        // ]);
-
-        \App\Models\Topic::factory(5)->create();
-        \App\Models\Deck::factory(10)->create();
+        \App\Models\Topic::factory(8)->create();
+        \App\Models\Deck::factory(20)->create();
         \App\Models\Flashcard::factory(80)->create();
     }
 }

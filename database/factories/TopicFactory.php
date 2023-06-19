@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
+use App\Models\Category;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Topic>
@@ -17,10 +19,11 @@ class TopicFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->words(3, true),
+            'title' => 'topic '.fake()->words(3, true),
             'description' => fake()->words(7, true),
 
-            'user_id' => 2
+            'user_id' => User::all()->where('is_admin', 0)->random()->id,
+            'category_id' => Category::all()->random()->id
         ];
     }
 }

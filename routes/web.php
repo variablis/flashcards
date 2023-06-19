@@ -3,6 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\TopicController;
+use App\Http\Controllers\DeckController;
+use App\Http\Controllers\FlashcardController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +20,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welc');
+
+// Route::resource('flashcards', FlashcardController::class);
+// Route::resource('topics', TopicController::class, ['names' => 'abc'])->middleware('auth');
+
+
+Route::resource('topics', TopicController::class)
+    ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
+
+
+Route::resource('decks', DeckController::class)
+    ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
+
+
+Route::resource('flashcards', FlashcardController::class)
+    ->only(['index', 'store'])
+    ->middleware(['auth', 'verified']);
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
