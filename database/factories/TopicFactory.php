@@ -19,8 +19,8 @@ class TopicFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => 'topic '.fake()->words(3, true),
-            'description' => fake()->words(7, true),
+            'title' => ucfirst('topic '.fake()->words(rand(1, 7), true)),
+            'description' => ucfirst('topic description '. fake()->words(rand(3, 7), true)),
 
             'user_id' => User::all()->where('is_admin', 0)->random()->id,
             'category_id' => Category::all()->random()->id

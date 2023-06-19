@@ -18,8 +18,8 @@ class FlashcardFactory extends Factory
     public function definition(): array
     {
         return [
-            'question' => 'q '.fake()->words(5, true),
-            'answer' => 'a '. fake()->words(5, true),
+            'question' => ucfirst(fake()->words(rand(1, 15), true)),
+            'answer' => ucfirst(fake()->words(rand(1, 25), true)),
             'times_viewed' => fake()->randomNumber(3),
             'times_answered' => fake()->randomNumber(2),
             

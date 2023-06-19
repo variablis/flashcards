@@ -22,6 +22,7 @@ class FlashcardController extends Controller
         return view ('flashcards', [
             // 'xtopics' => Topic::where('user_id', $id)->latest()->get(),
             'xfc' => Flashcard::whereBelongsTo($dcks)->get(),
+            'xtopics' => $dcks,
         ]);
     }
 

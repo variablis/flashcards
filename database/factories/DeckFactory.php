@@ -19,8 +19,8 @@ class DeckFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => 'deck '. fake()->words(3, true),
-            'description' => fake()->words(7, true),
+            'title' => ucfirst('deck '. fake()->words(rand(1, 5), true)),
+            'description' => ucfirst('deck description '. fake()->words(rand(1, 12), true)),
             'progress' => fake()->randomNumber(2),
             'count' => fake()->randomNumber(2),
 

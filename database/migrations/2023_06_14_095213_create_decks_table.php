@@ -17,11 +17,11 @@ return new class extends Migration
 
             $table->string('title');
             $table->string('description');
-            $table->integer('progress');
-            $table->integer('count');
+            $table->integer('progress')->default(0);
+            $table->integer('count')->nullable();
 
             $table->foreignId('topic_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('tag_id')->constrained();
+            $table->foreignId('tag_id')->nullable()->constrained();
         });
     }
 

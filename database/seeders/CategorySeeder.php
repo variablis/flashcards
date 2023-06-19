@@ -26,6 +26,8 @@ class CategorySeeder extends Seeder
             ['name' => 'Professional'],
             ['name' => 'Food'],
             ['name' => 'Law'],
+            
+            ['name' => 'Uncatogarized'],
         ];
 
         DB::table('categories')->insert($categories);

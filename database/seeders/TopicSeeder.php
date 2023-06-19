@@ -14,6 +14,11 @@ class TopicSeeder extends Seeder
      */
     public function run(): void
     {
-        // Topic::create(['title' => 'Topic name 1', 'description' => 'Some topic description', 'user_id'=>2]);
+        Topic::create([
+            'title' => 'Default Topic', 
+            'description' => 'Topic description', 
+            'user_id'=> 2,
+            'category_id' => 12,
+        ]);
     }
 }

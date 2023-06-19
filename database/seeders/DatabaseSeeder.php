@@ -23,10 +23,13 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TagSeeder::class,
             CategorySeeder::class,
+
+            TopicSeeder::class,
+            DeckSeeder::class,
         ]);
 
-        \App\Models\Topic::factory(8)->create();
-        \App\Models\Deck::factory(20)->create();
-        \App\Models\Flashcard::factory(80)->create();
+        \App\Models\Topic::factory(20)->create();
+        \App\Models\Deck::factory(60)->create();
+        \App\Models\Flashcard::factory(780)->create();
     }
 }

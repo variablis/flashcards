@@ -16,9 +16,9 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('topics.index')" :active="request()->routeIs('topics.index')">
+                    {{-- <x-nav-link :href="route('topics.index')" :active="request()->routeIs('topics.index')">
                         {{ __('Topics') }}
-                    </x-nav-link>
+                    </x-nav-link> --}}
 
                     <x-nav-link :href="route('decks.index')" :active="request()->routeIs('decks.index')">
                         {{ __('Decks') }}

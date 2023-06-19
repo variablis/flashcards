@@ -14,6 +14,13 @@ class DeckSeeder extends Seeder
      */
     public function run(): void
     {
-        // Deck::create(['title' => 'Deck name 1', 'description' => 'Some deck description', 'progress'=> 0, 'count' => 5, 'topic_id'=>1]);
+        Deck::create([
+            'title' => 'Default Deck', 
+            'description' => 'Default deck description', 
+            'progress'=> 0, 
+            'count' => 0, 
+            'topic_id'=>1,
+            'tag_id'=>1
+        ]);
     }
 }
