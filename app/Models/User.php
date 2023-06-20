@@ -51,6 +51,6 @@ class User extends Authenticatable
     }
 
     public function decks(){
-        return $this->hasManyThrough('App\Models\Deck', 'App\Models\Topic');
+        return $this->hasManyThrough(Deck::class, Topic::class);
     }
 }

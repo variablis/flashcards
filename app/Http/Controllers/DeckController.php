@@ -13,6 +13,8 @@ use App\Models\Topic;
 use App\Models\Deck;
 use App\Models\Flashcard;
 
+use Illuminate\Database\Eloquent\Builder;
+
 
 class DeckController extends Controller
 {
@@ -32,22 +34,20 @@ class DeckController extends Controller
      */
     public function index(): View
     {
-        $tpcs = Topic::whereBelongsTo(auth()->user())->get();
-        // $dcks = Deck::whereBelongsTo($tpcs)->get();
+        $uu = auth()->user()->topics()->withCount([
+            'decks', 
+            'flashcards',
+            'flashcards as flashcards_to_learn' => function (Builder $query) {
+                $query->where('last_viewed', '<', now()->subDays(3))
+                ->orWhere('last_answer','=', false);
+            }
+        ])->get();
 
-        $topicsWithDecks = $tpcs->map(function ($topic) {
-            $decks = Deck::whereBelongsTo($topic)->get();
-            return [
-                'topic' => $topic,
-                'decks' => $decks,
-            ];
-        });
-
-        // dd($topicsWithDecks);
+        // dd($uu);
 
         return view ('decks', [
-            'xdata' => $topicsWithDecks,
-            'xtopics' => $tpcs,
+            'xtest' => $uu,
+            'xtopics' => $uu,
         ]);
     }
 
@@ -81,25 +81,22 @@ class DeckController extends Controller
     public function show(string $id)
     {
         $tpcs = Topic::whereBelongsTo(auth()->user())->get();
-        
-        $tp = Topic::findOrFail($id);
+        // $tp = Topic::findOrFail($id);
 
-        // dd(Deck::whereBelongsTo($tp)->get());
-
-        $topicsWithDecks = collect([$tp])->map(function ($topic) {
-            $decks = Deck::whereBelongsTo($topic)->get();
-            return [
-                'topic' => $topic,
-                'decks' => $decks,
-            ];
-        });
-
-        // dd($topicsWithDecks);
+        $uu = auth()->user()->topics()->where('id', $id)->withCount([
+            'decks', 
+            'flashcards',
+            'flashcards as flashcards_to_learn' => function (Builder $query) {
+                $query->where('last_viewed', '<', now()->subDays(3))
+                ->orWhere('last_answer','=', false);
+            }
+        ])->get();
 
         return view ('decks', [
-            'xdata' => $topicsWithDecks,
+            'xtest' => $uu,
             'xtopics' => $tpcs,
         ]);
+
     }
 
     /**

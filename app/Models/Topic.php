@@ -24,4 +24,8 @@ class Topic extends Model
     public function category(): BelongsTo{
         return $this->belongsTo(Category::class);
     }
+
+    public function flashcards(){
+        return $this->hasManyThrough(Flashcard::class, Deck::class);
+    }
 }

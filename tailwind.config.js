@@ -18,4 +18,15 @@ export default {
     },
 
     plugins: [forms],
+
+    darkMode: 'class',
+
+    safelist: [
+        'text-2xl',
+        'text-3xl',
+        {
+          pattern: /(from|to|via)-(rose|emerald|blue)-(500|600|700|800)/,
+        },
+      ],
+
 };

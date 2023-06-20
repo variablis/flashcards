@@ -14,7 +14,7 @@ export default defineConfig({
 
     server: {
         https: false,
-        cors: false,
-        host: 'localhost',
+        cors: true,
+        host: 'flashcards.localdev',
       }
 });

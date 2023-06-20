@@ -2,7 +2,7 @@
 
     <div class="max-w-xl mx-auto p-4 sm:p-6 lg:p-8">
 
-        <div id="card-block" class="bg-white shadow overflow-hidden sm:rounded-md max-w-sm mx-auto p-6">
+        <div id="card-block" class="bg-white shadow overflow-hidden sm:rounded-md max-w-lg mx-auto p-6">
             <div id="card">
                 <div id="q" class="p-6"></div>
                 <hr>
@@ -14,14 +14,15 @@
             </div>
             
             <div id="next-block" style="display: none;">
-                <a id="btn-wrong" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4" href="#card" >Wrong</a>
-                <a id="btn-correct" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4" href="#card" >Correct</a>
+                <x-my-link id="btn-wrong" color="rose" href="#card">Wrong</x-my-link>
+                <x-my-link id="btn-correct" color="emerald" href="#card">Correct</x-my-link>
             </div>
         </div>
     
         <div id="end-block" class="bg-white shadow overflow-hidden sm:rounded-md max-w-sm mx-auto p-6" style="display: none;">
             All flashcards reviewed. 
-            <a href="{{ route('decks.index') }}">Back to decks</a>
+            {{-- <a href="{{ route('decks.index') }}">Back to decks</a> --}}
+            <x-my-link href="{{ route('decks.index') }}">Back to decks</x-my-link>
         </div>
     </div>
 
@@ -91,17 +92,26 @@
             if (currentIndex < fdata.length) {
                 populateCard(currentIndex);
             } else {
-                // Show the end-block when there are no more cards
-                if (endBlockElement) {
-                    endBlockElement.style.display = 'block';
-                    cardBlockElement.style.display = 'none'; // Hide card-block
-                }
+                showEndBlock();
+            }
+        }
+
+        function showEndBlock() {
+            if (endBlockElement) {
+                endBlockElement.style.display = 'block';
+                cardBlockElement.style.display = 'none';
+            }
+        }
+
+        function showCardBlock() {
+            if (cardBlockElement) {
+                endBlockElement.style.display = 'none';
+                cardBlockElement.style.display = 'block';
             }
         }
     
         function populateCard(idx) {
-
-            if (qElement && aElement && showBtnElement && answerBlockElement && nextBlockElement) {
+            if (fdata.length && qElement && aElement && showBtnElement && answerBlockElement && nextBlockElement) {
                 qElement.textContent = fdata[idx].question;
                 aElement.textContent = fdata[idx].answer;
                 aElement.style.display = 'none';
@@ -112,21 +122,20 @@
                 wrongBtnElement.onclick = function() { nextCard(0, fdata[idx].id); };
                 correctBtnElement.href = '#card';
                 correctBtnElement.onclick = function() { nextCard(1, fdata[idx].id); };
-
                 showBtnElement.onclick = function() { showAnswer(); };
             }
         }
     
         document.addEventListener('DOMContentLoaded', function() {
             populateCard(currentIndex);
-            // Hide the end-block and card-block initially
-            if (endBlockElement) {
-                endBlockElement.style.display = 'none';
-            }
-            if (cardBlockElement) {
-                cardBlockElement.style.display = 'block';
+
+            if(fdata.length==0){
+                showEndBlock();
+            }else{
+                showCardBlock();
             }
         });
+        
     </script>
   
 

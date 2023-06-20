@@ -40,7 +40,7 @@ Route::get('deck/create/{id}', [DeckController::class, 'create'])->name('deck.cr
 
 
 Route::resource('flashcards', FlashcardController::class)
-    ->only(['index', 'store'])
+    ->only(['index', 'store', 'create'])
     ->middleware(['auth', 'verified']);
 
 Route::put('flashcard/{id}', [FlashcardController::class, 'update'])->name('flashcard.update');
