@@ -32,7 +32,7 @@ Route::resource('topics', TopicController::class)
 
 
 Route::resource('decks', DeckController::class)
-    ->only(['index', 'show','store', 'create','edit', 'update', 'destroy'])
+    ->only(['index', 'show', 'store', 'create', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 Route::get('decks/test/{id}', [DeckController::class, 'test'])->name('decks.test');
@@ -40,7 +40,7 @@ Route::get('deck/create/{id}', [DeckController::class, 'create'])->name('deck.cr
 
 
 Route::resource('flashcards', FlashcardController::class)
-    ->only(['index', 'store', 'create'])
+    ->only(['index', 'show', 'store', 'create'])
     ->middleware(['auth', 'verified']);
 
 Route::put('flashcard/{id}', [FlashcardController::class, 'update'])->name('flashcard.update');

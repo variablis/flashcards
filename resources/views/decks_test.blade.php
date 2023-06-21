@@ -2,7 +2,7 @@
 
     <div class="max-w-xl mx-auto p-4 sm:p-6 lg:p-8">
 
-        <div id="card-block" class="bg-white shadow overflow-hidden sm:rounded-md max-w-lg mx-auto p-6">
+        <div id="card-block" class="bg-white shadow overflow-hidden sm:rounded-md p-6">
             <div id="card">
                 <div id="q" class="p-6"></div>
                 <hr>
@@ -19,9 +19,8 @@
             </div>
         </div>
     
-        <div id="end-block" class="bg-white shadow overflow-hidden sm:rounded-md max-w-sm mx-auto p-6" style="display: none;">
-            All flashcards reviewed. 
-            {{-- <a href="{{ route('decks.index') }}">Back to decks</a> --}}
+        <div id="end-block" class="bg-white shadow overflow-hidden sm:rounded-md p-6" style="display: none;">
+            <p class="pb-6">All flashcards reviewed.</p>
             <x-my-link href="{{ route('decks.index') }}">Back to decks</x-my-link>
         </div>
     </div>

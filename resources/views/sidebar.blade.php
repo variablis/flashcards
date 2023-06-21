@@ -9,9 +9,11 @@
             <a href="{{ route('decks.index') }}" class="text-lg leading-6 font-medium text-gray-900">All</a>
         </li>
 
-        @foreach ($xtopics as $t)
+        @foreach ($xside as $t)
         <li class="border-t border-gray-200 p-4">
-            <a href="{{ route('decks.show', $t->id ) }}" class="text-lg leading-6 font-medium text-gray-900">{{ $t->title }}</a>
+            {{-- <a href="{{ route('decks.show', $t->id ) }}" class="text-lg leading-6 font-medium text-gray-900">{{ $t->title }}</a> --}}
+
+            <a href="{{ route('flashcards.show', $t->id ) }}" class="text-lg leading-6 font-medium text-gray-900">{{ $t->title }}</a>
         </li>
         @endforeach
     </ul>
