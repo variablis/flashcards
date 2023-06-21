@@ -3,7 +3,7 @@
     <div class="flex">
         <div class="flex-none w-80">
             {{-- @include('sidebar') --}}
-            @include('sidebar', ['attributeName' => $xtopics, 'attr2' => 'flashcards'])
+            @include('sidebar', ['attributeName' => $xside, 'attr2' => 'flashcards'])
 
         </div>
         <div class="flex-auto">
@@ -13,6 +13,12 @@
     </div>
 
     <div class="max-w-4xl p-4">
+
+    {{$xfc->title}}
+    @foreach ($xfc->flashcards as $x)
+        <div>Q: {{$x->question}}</div>
+        <div>A: {{$x->answer}}</div>
+    @endforeach
 
     @foreach ($xfc->groupBy('deck.title') as $deckTitle => $decks)
     <div class="bg-white shadow overflow-hidden sm:rounded-md p-6">

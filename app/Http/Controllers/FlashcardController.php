@@ -50,10 +50,14 @@ class FlashcardController extends Controller
         // $dcks = Deck::whereBelongsTo($tpcs)->get();
 
         $dcks = auth()->user()->decks()->get();
-
         $fc = auth()->user()->decks()->where('decks.id', $id)->get();
 
-        dd($fc);
+        $fc = auth()->user()->decks()->find($id);
+
+        // $fc = auth()->user()->decks()->with('flashcards')->where('decks.id', $id)->get();
+
+
+        // dd($fc);
 
         return view ('flashcards', [
             'xfc' => $fc,

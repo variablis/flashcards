@@ -3,7 +3,7 @@
     <div class="flex">
         <div class="flex-none w-80">
             {{-- @include('sidebar') --}}
-            @include('sidebar', ['attributeName' => $xtopics, 'attr2' => 'decks'])
+            @include('sidebar', ['attributeName' => $xside, 'attr2' => 'decks'])
 
         </div>
         <div class="flex-auto">
