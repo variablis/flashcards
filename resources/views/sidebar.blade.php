@@ -6,12 +6,12 @@
     <ul class="bg-white shadow overflow-hidden sm:rounded-md ">
 
         <li class="border-t border-gray-200 p-4">
-            <a href="{{ route('decks.index') }}" class="text-lg leading-6 font-medium text-gray-900">All</a>
+            <a href="{{ route($attr2.'.index') }}" class="text-lg leading-6 font-medium text-gray-900">All</a>
         </li>
 
-        @foreach ($xtopics as $t)
+        @foreach ($attributeName as $t)
         <li class="border-t border-gray-200 p-4">
-            <a href="{{ route('decks.show', $t->id ) }}" class="text-lg leading-6 font-medium text-gray-900">{{ $t->title }}</a>
+            <a href="{{ route($attr2.'.show', $t->id ) }}" class="text-lg leading-6 font-medium text-gray-900">{{ $t->title }}</a>
         </li>
         @endforeach
     </ul>

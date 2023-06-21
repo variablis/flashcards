@@ -47,7 +47,7 @@ class FlashcardController extends Controller
      */
     public function show(string $id)
     {
-        //
+
     }
 
     /**

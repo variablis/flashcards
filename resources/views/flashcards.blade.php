@@ -2,7 +2,9 @@
 
     <div class="flex">
         <div class="flex-none w-80">
-            @include('sidebar')
+            {{-- @include('sidebar') --}}
+            @include('sidebar', ['attributeName' => $xtopics, 'attr2' => 'flashcards'])
+
         </div>
         <div class="flex-auto">
 

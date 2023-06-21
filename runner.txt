@@ -1,2 +1,5 @@
+composer install
+npm i
 
+php artisan key:generate
 php artisan serve --host=flashcards.localdev --port 80
