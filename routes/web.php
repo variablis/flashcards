@@ -32,7 +32,7 @@ Route::resource('topics', TopicController::class)
 
 
 Route::resource('decks', DeckController::class)
-    ->only(['index', 'show','store', 'create','edit', 'update', 'destroy'])
+    ->only(['index', 'show', 'store', 'create', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 Route::get('decks/test/{id}', [DeckController::class, 'test'])->name('decks.test');

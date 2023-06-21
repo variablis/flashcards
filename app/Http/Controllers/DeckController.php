@@ -47,7 +47,7 @@ class DeckController extends Controller
 
         return view ('decks', [
             'xtest' => $uu,
-            'xtopics' => $uu,
+            'xside' => $uu,
         ]);
     }
 
@@ -81,8 +81,6 @@ class DeckController extends Controller
     public function show(string $id)
     {
         $tpcs = Topic::whereBelongsTo(auth()->user())->get();
-        // $tp = Topic::findOrFail($id);
-
         $uu = auth()->user()->topics()->where('id', $id)->withCount([
             'decks', 
             'flashcards',
@@ -94,7 +92,7 @@ class DeckController extends Controller
 
         return view ('decks', [
             'xtest' => $uu,
-            'xtopics' => $tpcs,
+            'xside' => $tpcs,
         ]);
 
     }

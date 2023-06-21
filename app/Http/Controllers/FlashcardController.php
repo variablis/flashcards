@@ -20,9 +20,8 @@ class FlashcardController extends Controller
         $dcks = Deck::whereBelongsTo($tpcs)->get();
 
         return view ('flashcards', [
-            // 'xtopics' => Topic::where('user_id', $id)->latest()->get(),
             'xfc' => Flashcard::whereBelongsTo($dcks)->get(),
-            'xtopics' => $dcks,
+            'xside' => $dcks,
         ]);
     }
 
@@ -47,7 +46,19 @@ class FlashcardController extends Controller
      */
     public function show(string $id)
     {
+        // $tpcs = Topic::whereBelongsTo(auth()->user())->get();
+        // $dcks = Deck::whereBelongsTo($tpcs)->get();
 
+        $dcks = auth()->user()->decks()->get();
+
+        $fc = auth()->user()->decks()->where('decks.id', $id)->get();
+
+        dd($fc);
+
+        return view ('flashcards', [
+            'xfc' => $fc,
+            'xside' => $dcks,
+        ]);
     }
 
     /**
