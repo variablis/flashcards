@@ -12,6 +12,7 @@ use App\Models\Category;
 use App\Models\Topic;
 use App\Models\Deck;
 use App\Models\Flashcard;
+use Illuminate\Support\Facades\Gate;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -43,14 +44,65 @@ class DeckController extends Controller
             }
         ])->get();
 
-        // dd($uu);
-
         return view ('decks', [
             'xtest' => $uu,
             'xside' => $uu,
         ]);
+       
     }
 
+    public function explore(): View
+    {
+        // $tt = Deck::myTest(14)->get();
+        // dd($tt);
+
+        if(Gate::allows('is-admin')){
+            echo 'admins';
+        }
+
+        $decks = Deck::filter(request(['search']))
+        ->with('topic.category')
+        ->get();
+
+        // $am=array();
+        // foreach($decks as $deck){
+        //     $t=$deck->topic;
+        //     $c=$t->category;
+        //     $am[$deck->title][]=$t->toArray();
+        // }
+        
+        // return view ('welcome', [
+        //     'xcat' => $am,
+        // ]);
+
+        // dd($am['Deck dolorem']);
+        // foreach ( $am as $category => $topics ) {
+        //     foreach ($topics as $t) {
+        //         // dd($t['title']);
+        //     }
+        // }
+        // Category::all()
+
+        // $grouped = $decks->groupBy('topic');
+
+        // dd($decks->pluck('topic')->unique());
+
+        $groupedDecks = $decks->groupBy([
+            'topic.category.id',
+            'topic.id'
+        ]);
+        // dd($groupedDecks);
+
+        $s=request()->input('search');
+    
+
+        return view ('explore', [
+            // 'xcat' => $decks->pluck('topic')->unique(),
+            'xcat'=> $groupedDecks,
+            'srch' => $s
+        ]);
+
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -80,20 +132,52 @@ class DeckController extends Controller
      */
     public function show(string $id)
     {
-        $tpcs = Topic::whereBelongsTo(auth()->user())->get();
-        $uu = auth()->user()->topics()->where('id', $id)->withCount([
-            'decks', 
-            'flashcards',
-            'flashcards as flashcards_to_learn' => function (Builder $query) {
-                $query->where('last_viewed', '<', now()->subDays(3))
-                ->orWhere('last_answer','=', false);
-            }
-        ])->get();
 
-        return view ('decks', [
-            'xtest' => $uu,
-            'xside' => $tpcs,
-        ]);
+        $belongsToUser=false;
+        // $topic = Topic::findOrFail($id);
+        // check if deck belongs to user
+        if(auth()->check()){
+            // $belongsToUser = auth()->user()->topics()
+            //     ->whereHas('decks', function ($query) use ($id) {
+            //         $query->where('id', $id);
+            //     })
+            //     ->exists();
+
+            
+            $topic = Topic::findOrFail($id);
+
+            $belongsToUser = $topic->user_id === auth()->user()->id;
+
+           // dd($dck->topic);
+            // dd(auth()->user()->id);
+        }
+
+        if($belongsToUser){
+
+            $tpcs = Topic::whereBelongsTo(auth()->user())->get();
+            $uu = auth()->user()->topics()->where('id', $id)->withCount([
+                'decks', 
+                'flashcards',
+                'flashcards as flashcards_to_learn' => function (Builder $query) {
+                    $query->where('last_viewed', '<', now()->subDays(3))
+                    ->orWhere('last_answer','=', false);
+                }
+            ])->get();
+
+            return view ('decks', [
+                'xtest' => $uu,
+                'xside' => $tpcs,
+            ]);
+
+        }else{ 
+            
+            $topic = Topic::findOrFail($id);
+            return view ('decks', [
+                'xtest' => compact('topic'),
+                'xside' => $topic->category->topics,
+            ]);
+
+        }
 
     }
 

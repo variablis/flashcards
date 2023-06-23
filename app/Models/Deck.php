@@ -20,4 +20,20 @@ class Deck extends Model
     public function topic(){
         return $this->belongsTo(Topic::class);
     }
+
+    public function scopeFilter($query, array $filters){
+        if($filters['search'] ?? false){
+            $query->where('title', 'like', '%'.request('search').'%')
+            ->orWhere('description', 'like', '%'.request('search').'%')
+            ->orWhereHas('topic', function ($query) use ($filters) {
+                $query->where('title', 'like', '%' . $filters['search'] . '%');
+            });
+            
+        }
+    }
+
+    public function scopeMyTest($query, $ids){
+        return $query->where('id', $ids);
+    }
+    
 }

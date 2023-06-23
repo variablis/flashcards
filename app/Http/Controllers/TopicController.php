@@ -18,18 +18,25 @@ class TopicController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index(): View
+    public function index()
     {
         // dd($posts = User::find(1)->topics);
         // dd(Topic::with('user')->where('user_id', 1)->get());
         // dd(Category::find(1));
 
 
-        return view ('topics', [
-            // 'xtopics' => Topic::where('user_id', $id)->latest()->get(),
-            'xtopics' => Topic::whereBelongsTo(auth()->user())->get(),
-            'cc' => Category::all(),
-        ]);
+        // return view ('topics', [
+        //     // 'xtopics' => Topic::where('user_id', $id)->latest()->get(),
+        //     'xtopics' => Topic::whereBelongsTo(auth()->user())->get(),
+        //     'cc' => Category::all(),
+        // ]);
+
+        // dd(auth()->guest());
+
+        // return view ('welcome', [
+        //     'xcat' => Category::all(),
+        //     'xtopics' => Topic::all(),
+        // ]);
     }
 
     /**
@@ -60,7 +67,10 @@ class TopicController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $tpc = Topic::findOrFail($id);
+        return view ('topic', [
+            'xtopics' => compact('tpc'),
+        ]);
     }
 
     /**

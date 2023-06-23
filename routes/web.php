@@ -18,12 +18,12 @@ use App\Http\Controllers\FlashcardController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welc');
+// Route::get('/', function () {
+//     return view('welcome');
+// })->name('welc');
 
-// Route::resource('flashcards', FlashcardController::class);
-// Route::resource('topics', TopicController::class, ['names' => 'abc'])->middleware('auth');
+Route::get('/', [DeckController::class, 'explore'])->name('expl');
+// Route::get('topic/{id}', [TopicController::class, 'show'])->name('topic.show');
 
 
 Route::resource('topics', TopicController::class)
@@ -32,18 +32,24 @@ Route::resource('topics', TopicController::class)
 
 
 Route::resource('decks', DeckController::class)
-    ->only(['index', 'show', 'store', 'create', 'edit', 'update', 'destroy'])
-    ->middleware(['auth', 'verified']);
+    ->only(['index','store', 'create', 'edit', 'update', 'destroy'])
+    ->middleware(['auth']);
+
+
+Route::get('decks/{id}', [DeckController::class, 'show'])->name('decks.show'); // both aauth and guest
 
 Route::get('decks/test/{id}', [DeckController::class, 'test'])->name('decks.test');
 Route::get('deck/create/{id}', [DeckController::class, 'create'])->name('deck.create');
 
 
 Route::resource('flashcards', FlashcardController::class)
-    ->only(['index', 'show' ,'store', 'create'])
+    ->only(['index' ,'store', 'create'])
     ->middleware(['auth', 'verified']);
 
+Route::get('flashcards/{id}', [FlashcardController::class, 'show'])->name('flashcards.show'); // both aauth and guest
+
 Route::put('flashcard/{id}', [FlashcardController::class, 'update'])->name('flashcard.update');
+Route::get('flashcard/create/{id}', [FlashcardController::class, 'create'])->name('flashcard.create');
 
 
 Route::get('/dashboard', function () {

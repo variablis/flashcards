@@ -1,8 +1,7 @@
 <x-app-layout>
 
-    <div class="flex">
+    <div class="flex mx-auto max-w-7xl">
         <div class="flex-none w-80">
-            {{-- @include('sidebar') --}}
             @include('sidebar', ['attributeName' => $xside, 'attr2' => 'decks'])
 
         </div>

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Topic extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'description'];
+    protected $fillable = ['title', 'description', 'is_public'];
 
 
     public function decks(){
@@ -28,4 +28,8 @@ class Topic extends Model
     public function flashcards(){
         return $this->hasManyThrough(Flashcard::class, Deck::class);
     }
+
+    // public function scopeFilterByTitle($query, $title){
+    //     return $query->where('title', 'like', '%' . $title . '%');
+    // }
 }

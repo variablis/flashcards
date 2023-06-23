@@ -16,11 +16,14 @@ class FlashcardController extends Controller
      */
     public function index(): View
     {
-        $tpcs = Topic::whereBelongsTo(auth()->user())->get();
-        $dcks = Deck::whereBelongsTo($tpcs)->get();
+        // $tpcs = Topic::whereBelongsTo(auth()->user())->get();
+        // $dcks = Deck::whereBelongsTo($tpcs)->get();
+
+        $dcks = auth()->user()->decks()->get();
 
         return view ('flashcards', [
-            'xfc' => Flashcard::whereBelongsTo($dcks)->get(),
+            // 'xfc' => Flashcard::whereBelongsTo($dcks)->get(),
+            'xfc' => $dcks,
             'xside' => $dcks,
         ]);
     }
@@ -28,9 +31,10 @@ class FlashcardController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(string $id)
     {
-        //
+        $dck = Deck::find($id)->first();
+        return view('flashcard_new', compact('dck'));
     }
 
     /**
@@ -38,7 +42,14 @@ class FlashcardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $fc = new Flashcard();
+        $fc->question = $request->fc_question;
+        $fc->answer = $request->fc_answer;
+        $fc->deck_id = $request->dck_id;
+        $fc->save();
+
+        $action = action([FlashcardController::class, 'index']);
+        return redirect($action);
     }
 
     /**
@@ -46,23 +57,21 @@ class FlashcardController extends Controller
      */
     public function show(string $id)
     {
-        // $tpcs = Topic::whereBelongsTo(auth()->user())->get();
-        // $dcks = Deck::whereBelongsTo($tpcs)->get();
+        if(auth()->check()){
+            $dcks = auth()->user()->decks()->get();
+            $fc = auth()->user()->decks()->find($id);
 
-        $dcks = auth()->user()->decks()->get();
-        $fc = auth()->user()->decks()->where('decks.id', $id)->get();
+            return view ('flashcards', [
+                'xfc' => compact('fc'),
+                'xside' => $dcks,
+            ]);
+        }else{
 
-        $fc = auth()->user()->decks()->find($id);
-
-        // $fc = auth()->user()->decks()->with('flashcards')->where('decks.id', $id)->get();
-
-
-        // dd($fc);
-
-        return view ('flashcards', [
-            'xfc' => $fc,
-            'xside' => $dcks,
-        ]);
+            $fc = Deck::findOrFail($id);;
+            return view ('flashcards', [
+                'xfc' => compact('fc'),
+            ]);
+        }
     }
 
     /**
