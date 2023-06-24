@@ -14,6 +14,46 @@ use App\Models\Category;
 
 class TopicController extends Controller
 {
+    public function copy(string $id)
+    {   
+        // Find the original topic by ID with its relationships
+        $originalTopic = Topic::with('category', 'decks.flashcards')->findOrFail($id);
+
+        // Replicate the original topic
+        $copiedTopic = $originalTopic->replicate();
+
+        // Save the copied topic with the associated user
+        $copiedTopic->user_id = auth()->id();
+        $copiedTopic->save();
+
+        // Replicate the category relationship
+        $copiedCategory = $originalTopic->category->replicate();
+        $copiedCategory->save();
+
+        // Associate the copied category with the copied topic
+        $copiedTopic->category()->associate($copiedCategory);
+        $copiedTopic->save();
+
+        // Replicate the decks relationship
+        foreach ($originalTopic->decks as $originalDeck) {
+            $copiedDeck = $originalDeck->replicate();
+            $copiedDeck->topic_id = $copiedTopic->id;
+            $copiedDeck->save();
+
+            // Replicate the flashcards relationship
+            foreach ($originalDeck->flashcards as $originalFlashcard) {
+                $copiedFlashcard = $originalFlashcard->replicate();
+                $copiedFlashcard->deck_id = $copiedDeck->id;
+                $copiedFlashcard->save();
+            }
+        }
+
+        // return view ('topics', [
+        //     'xtopics' => $tpcs,
+        // ]);
+
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -37,6 +77,15 @@ class TopicController extends Controller
         //     'xcat' => Category::all(),
         //     'xtopics' => Topic::all(),
         // ]);
+    }
+
+    public function indexCategory(string $id)
+    {
+        $cat = Category::findOrFail($id);
+        $tpcs = $cat->topics;
+        return view ('topics', [
+            'xtopics' => $tpcs,
+        ]);
     }
 
     /**

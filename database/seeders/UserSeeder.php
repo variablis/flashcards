@@ -45,5 +45,29 @@ class UserSeeder extends Seeder
             'email' => 'mara@localhost',
             'password' => Hash::make('123'),
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'Māris Upītis',
+            'email' => 'maris@localhost',
+            'password' => Hash::make('123'),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Andris Kalējs',
+            'email' => 'andris@localhost',
+            'password' => Hash::make('123'),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Zane Kalnabērza',
+            'email' => 'zane@localhost',
+            'password' => Hash::make('123'),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Ieva Kārkla',
+            'email' => 'ieva@localhost',
+            'password' => Hash::make('123'),
+        ]);
     }
 }

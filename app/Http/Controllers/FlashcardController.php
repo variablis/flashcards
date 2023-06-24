@@ -16,15 +16,12 @@ class FlashcardController extends Controller
      */
     public function index(): View
     {
-        // $tpcs = Topic::whereBelongsTo(auth()->user())->get();
-        // $dcks = Deck::whereBelongsTo($tpcs)->get();
-
         $dcks = auth()->user()->decks()->get();
 
         return view ('flashcards', [
-            // 'xfc' => Flashcard::whereBelongsTo($dcks)->get(),
             'xfc' => $dcks,
             'xside' => $dcks,
+            'xowns' => true,
         ]);
     }
 
@@ -57,19 +54,40 @@ class FlashcardController extends Controller
      */
     public function show(string $id)
     {
+        $belongsToUser=false;
+
+        // check if deck belongs to user
         if(auth()->check()){
+            $deck = Deck::findOrFail($id);
+            $belongsToUser = $deck->topic->user->id === auth()->user()->id;
+            
+            // $bel= (auth()->user()->topics()->whereHas('decks', function ($query) use ($deck) {
+            //     $query->where('id', $deck->id);
+            // })->exists());
+
+            // dd($bel);
+        }
+       
+
+        if($belongsToUser){
             $dcks = auth()->user()->decks()->get();
             $fc = auth()->user()->decks()->find($id);
 
             return view ('flashcards', [
                 'xfc' => compact('fc'),
                 'xside' => $dcks,
+                'xowns'=>true,
             ]);
+
         }else{
 
-            $fc = Deck::findOrFail($id);;
+            $fc = Deck::findOrFail($id);
+            $allDecks = $fc->topic->decks;
+
             return view ('flashcards', [
                 'xfc' => compact('fc'),
+                'xside' => $allDecks,
+                'xowns'=>false,
             ]);
         }
     }

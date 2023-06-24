@@ -8,7 +8,13 @@
         <div class="flex-auto">
 
     <div class="max-w-4xl p-4 sm:p-6 lg:p-8">
+
+        @if ($xowns)
         <h2 class="text-xl font-bold">My decks</h2>
+        @else
+        <h2 class="text-xl font-bold">Explore community decks</h2>
+        @endif
+
     </div>
     
     <div class="max-w-4xl p-4">
@@ -20,17 +26,26 @@
             <div class="flex justify-between pb-4">
                 <h5 class="text-xl font-bold text-gray-400">{{ $da->title }}</h5>
 
+                @can('is-owner', $da)
+                owner, public: {{$da->is_public}}
+
                 <a href="{{ route('deck.create', $da->id ) }}" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 ">{{ __('Add Deck') }}</a>
+                @endcan
+
+                @can('not-owner', $da)
+                <a href="{{ route('topic.copy', $da->id ) }}" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 ">{{ __('Copy Topic') }}</a>
+                @endcan
+               
             </div>
              
-                {{-- @foreach ($da['decks'] as $d) --}}
+             
                 @foreach ($da->decks as $d)
                     
                     <div class="flex justify-between items-center mb-2 p-4 bg-white border border-gray-200 rounded-lg shadow-lg hover:bg-gray-100">
                         <div>
-                            <h5 class=" text-lg font-bold tracking-tight text-gray-900">
+                            <a href="{{ route('flashcards.show', $d->id) }}" class=" text-lg font-bold tracking-tight text-gray-900">
                                 {{ $d->title }} - {{ $d->flashcards->count() }} cards
-                            </h5>
+                            </a>
                             <p class="text-sm text-gray-500">{{ $d->description }}</p>
                         </div>
                         <x-my-dropdown :mydat="$d->id" />

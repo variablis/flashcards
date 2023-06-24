@@ -32,4 +32,11 @@ class Topic extends Model
     // public function scopeFilterByTitle($query, $title){
     //     return $query->where('title', 'like', '%' . $title . '%');
     // }
+
+    
+    public function scopeFilter($query, array $filters){
+        if($filters['search'] ?? false){
+            $query->where('title', 'like', '%'.request('search').'%');
+        }
+    }
 }

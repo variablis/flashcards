@@ -19,6 +19,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DeckController extends Controller
 {
+    public function copy(string $id)
+    {
+        return $id;
+    }
+
     public function test(string $id)
     {
         $tp = Topic::findOrFail($id);
@@ -44,65 +49,54 @@ class DeckController extends Controller
             }
         ])->get();
 
+        // dd($uu);
+
         return view ('decks', [
             'xtest' => $uu,
             'xside' => $uu,
-        ]);
-       
+            'xowns' =>true,
+        ]);  
     }
 
     public function explore(): View
     {
-        // $tt = Deck::myTest(14)->get();
-        // dd($tt);
+        // if(Gate::allows('is-admin')){
+        //     echo 'admins';
+        // }
 
-        if(Gate::allows('is-admin')){
-            echo 'admins';
-        }
-
-        $decks = Deck::filter(request(['search']))
-        ->whereHas('topic', function ($query) {
-            $query->where('is_public', true);
-        })
-        ->with('topic.category')
+        $topics = Topic::filter(request(['search']))
+        ->where('is_public', true)
+        ->with('decks')
         ->get();
 
-        // $am=array();
-        // foreach($decks as $deck){
-        //     $t=$deck->topic;
-        //     $c=$t->category;
-        //     $am[$deck->title][]=$t->toArray();
-        // }
-        
-        // return view ('welcome', [
-        //     'xcat' => $am,
-        // ]);
+        $decks1 = $topics->flatMap(function ($topic) {
+            return $topic->decks;
+        });
 
-        // dd($am['Deck dolorem']);
-        // foreach ( $am as $category => $topics ) {
-        //     foreach ($topics as $t) {
-        //         // dd($t['title']);
-        //     }
-        // }
-        // Category::all()
+        $decks = Deck::filter(request(['search']))
+        ->whereRelation('topic', 'is_public', true)
+        ->get();
 
-        // $grouped = $decks->groupBy('topic');
-
-        // dd($decks->pluck('topic')->unique());
-
+        $decks = $decks->concat($decks1);
         $groupedDecks = $decks->groupBy([
             'topic.category.id',
             'topic.id'
         ]);
+
+
         // dd($groupedDecks);
+
+        $groupedDecks = $groupedDecks->map(function ($group) {
+            return $group->take(5);
+        });
+
 
         $s=request()->input('search');
     
-
         return view ('explore', [
-            // 'xcat' => $decks->pluck('topic')->unique(),
             'xcat'=> $groupedDecks,
-            'srch' => $s
+            'srch' => $s,
+            'cnt' => $decks->count()
         ]);
 
     }
@@ -135,24 +129,19 @@ class DeckController extends Controller
      */
     public function show(string $id)
     {
+        // $t =Topic::findOrFail($id);
+
+        // dd($t);
+        // if (Gate::allows('is-owner', [auth()->user(), $t])) {
+        //     echo 'owneris';
+        // }
 
         $belongsToUser=false;
-        // $topic = Topic::findOrFail($id);
+
         // check if deck belongs to user
         if(auth()->check()){
-            // $belongsToUser = auth()->user()->topics()
-            //     ->whereHas('decks', function ($query) use ($id) {
-            //         $query->where('id', $id);
-            //     })
-            //     ->exists();
-
-            
             $topic = Topic::findOrFail($id);
-
             $belongsToUser = $topic->user_id === auth()->user()->id;
-
-           // dd($dck->topic);
-            // dd(auth()->user()->id);
         }
 
         if($belongsToUser){
@@ -170,18 +159,19 @@ class DeckController extends Controller
             return view ('decks', [
                 'xtest' => $uu,
                 'xside' => $tpcs,
+                'xowns' =>true,
             ]);
 
-        }else{ 
-            
+        }else{
             $topic = Topic::findOrFail($id);
+            $allTopics=$topic->category->topics->where('is_public', true);
             return view ('decks', [
                 'xtest' => compact('topic'),
-                'xside' => $topic->category->topics,
+                // 'xtest' => $topic,
+                'xside' => $allTopics,
+                'xowns' =>false,
             ]);
-
         }
-
     }
 
     /**

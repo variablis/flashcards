@@ -5,6 +5,14 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
+use App\Models\User;
+use App\Models\Topic;
+
+// use App\Models\Topic;
+// use App\Policies\TopicPolicy;
+// use App\Models\Deck;
+// use App\Policies\DeckPolicy;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +21,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        //
+        // Topic::class => TopicPolicy::class,
+        // Deck::class => DeckPolicy::class,
     ];
 
     /**
@@ -24,5 +33,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('is-admin', function($user){
             return $user->is_admin;
         });
+
+        Gate::define('is-owner', function(User $user, Topic $model){
+            return $model->user_id === $user->id;
+        });
+
+        Gate::define('not-owner', function(User $user, Topic $model){
+            return auth()->user() and $model->user_id !== $user->id;
+        });
+
     }
 }

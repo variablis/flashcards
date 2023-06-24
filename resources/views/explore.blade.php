@@ -1,11 +1,12 @@
 <x-app-layout>
 
 <div class="mx-auto max-w-7xl p-4">
+    <div class="pb-6">
        <h2 class="text-4xl pb-6">Explore</h2>
        <p class="pb-6">Flashcard learning enhances memory retention through active recall, enabling users to reinforce understanding and recall key information more effectively. Its portability and adaptability make it a versatile tool for personalized and convenient studying, allowing users to optimize their learning experience.
        </p>
 
-       <form action="/">   
+        <form action="/">   
         <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
         <div class="relative">
             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -14,45 +15,62 @@
             <input type="search" name="search" id="default-search" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for Topics, Decks and Flashcards..." required>
             <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{{__('Search')}}</button>
         </div>
-    </form>
+        </form>
 
        @if($srch)
        <div class="p-4">
-       Search results for: {{$srch}}
+       Search results {{$cnt}} for: {{$srch}}
         </div>
        @endif
+    </div>
 
 @if($xcat->isNotEmpty())
 
+    @if($srch)
     @foreach ($xcat as $categoryId => $categoryDecks)
-
-        <h2 class="text-2xl">Category: {{ $categoryDecks->first()->first()->topic->category->name }}</h2>
+        <h2 class="mb-4 text-2xl">{{ $categoryDecks->first()->first()->topic->category->name }}</h2>
 
         @foreach ($categoryDecks as $topicId => $topicDecks)
-        <div class="bg-white shadow overflow-hidden sm:rounded-md p-6">
-            <a class="text-2xl font-bold" href="{{ route('decks.show', $topicDecks->first()->topic->id ) }}">
-                {{ $topicDecks->first()->topic->title }}: {{ $topicDecks->first()->topic->user->name }} 
-                - {{ $topicDecks->first()->topic->is_public }}
-            </a>
-            
-        @if($srch)
-            @foreach ($topicDecks as $deck)
-                <div class="bg-white shadow overflow-hidden sm:rounded-md p-6">
-                    <a href="{{ route('flashcards.show', $topicDecks->first()->id ) }}">
-                        <p class="text-xl font-bold">{{ $deck->title }}</p>
-                        <p>{{ $deck->description }}</p>
-                    </a>
-                </div><br>
-            @endforeach
-        @endif
-            </div>
-            <br>
-            
-        @endforeach
-        
-        <br>
 
+            
+            <div class="mb-4 bg-white shadow overflow-hidden sm:rounded-md p-6">
+                <div class="mb-4">
+                <a class="text-xl font-bold" href="{{ route('decks.show', $topicDecks->first()->topic->id ) }}">
+                    {{ $topicDecks->first()->topic->title }}: {{ $topicDecks->first()->topic->user->name }} 
+                    - {{ $topicDecks->first()->topic->is_public }}
+                </a>
+                </div>
+                @foreach ($topicDecks as $deck)
+                    <div class="mb-2 bg-white shadow-lg border border-gray-200 overflow-hidden sm:rounded-md p-6">
+                        <a href="{{ route('flashcards.show', $topicDecks->first()->id ) }}">
+                            <p class="text-xl font-bold">{{ $deck->title }}</p>
+                            <p>{{ $deck->description }}</p>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+         
+        @endforeach
     @endforeach
+
+    @else
+
+    <div class="grid grid-cols-3 gap-4">
+    @foreach ($xcat as $categoryId => $categoryDecks)
+    <div class="pb-4">
+        <h2 class="mb-4 text-2xl">{{ $categoryDecks->first()->first()->topic->category->name }}</h2>
+        @foreach ($categoryDecks as $topicId => $topicDecks)
+        <a class="text-lg block" href="{{ route('decks.show', $topicDecks->first()->topic->id ) }}">
+            {{ $topicDecks->first()->topic->title }}
+            {{-- {{ $topicDecks->first()->topic->decks->count() }} decks --}}
+        </a>
+        @endforeach
+        <a href="{{ route('topics.indexCategory', $categoryId) }}">Show All...</a>
+    </div>
+    @endforeach
+    </div>
+
+    @endif
 
 @else
 

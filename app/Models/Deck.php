@@ -22,12 +22,13 @@ class Deck extends Model
     }
 
     public function scopeFilter($query, array $filters){
+        // dd($filters);
         if($filters['search'] ?? false){
             $query->where('title', 'like', '%'.request('search').'%')
-            ->orWhere('description', 'like', '%'.request('search').'%')
-            ->orWhereHas('topic', function ($query) use ($filters) {
-                $query->where('title', 'like', '%' . $filters['search'] . '%');
-            });
+            ->orWhere('description', 'like', '%'.request('search').'%');
+            // ->orWhereHas('topic', function ($query) use ($filters) {
+            //     $query->where('title', 'like', '%' . $filters['search'] . '%');
+            // });
             
         }
     }

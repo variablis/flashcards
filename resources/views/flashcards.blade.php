@@ -1,4 +1,4 @@
-@auth
+{{-- @auth --}}
 <x-app-layout>
 
     <div class="flex mx-auto max-w-7xl">
@@ -10,7 +10,12 @@
         <div class="flex-auto">
 
         <div class="max-w-4xl p-4 sm:p-6 lg:p-8">
+            {{-- <h2 class="text-xl font-bold">My flashcards</h2> --}}
+            @if ($xowns)
             <h2 class="text-xl font-bold">My flashcards</h2>
+            @else
+            <h2 class="text-xl font-bold">Explore community flashcards</h2>
+            @endif
         </div>
 
         <div class="max-w-4xl p-4">
@@ -39,10 +44,10 @@
     </div>
 
 </x-app-layout>
-@endauth
+{{-- @endauth --}}
 
 
-    @foreach ($xfc as $d)
+    {{-- @foreach ($xfc as $d)
     <div class="bg-white shadow overflow-hidden sm:rounded-md p-6">
         <div class="flex justify-between pb-4">
             <h5 class="text-xl font-bold text-gray-400">{{ $d->title }}</h5>
@@ -58,4 +63,4 @@
 
     </div>
     <br>
-    @endforeach
+    @endforeach --}}
