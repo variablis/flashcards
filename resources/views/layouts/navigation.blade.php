@@ -32,8 +32,16 @@
                 </div>
             </div>
 
+
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ml-6">
+            <div class="hidden space-x-8 sm:items-center sm:-my-px sm:ml-10 sm:flex">
+
+                @foreach(config('app.available_locales') as $locale)
+                <x-nav-link :href="route('lang', ['locale' => $locale])" :active="app()->getLocale() == $locale">
+                    {{ strtoupper($locale) }}
+                </x-nav-link>
+                 @endforeach
+
                 @auth    
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
@@ -66,10 +74,16 @@
                     </x-slot>
                 </x-dropdown>
                 @else
-                    <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
+                    {{-- <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">{{ __('Log in') }}</a> --}}
+                    <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
+                        {{ __('Log in') }}
+                    </x-nav-link>
 
                     @if (Route::has('register'))
-                        <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
+                        {{-- <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">{{ __('Register') }}</a> --}}
+                        <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                            {{ __('Register') }}
+                        </x-nav-link>
                     @endif
                 @endauth
             </div>

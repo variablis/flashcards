@@ -7,6 +7,8 @@ use App\Http\Controllers\TopicController;
 use App\Http\Controllers\DeckController;
 use App\Http\Controllers\FlashcardController;
 
+use Illuminate\Support\Facades\App;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +27,17 @@ use App\Http\Controllers\FlashcardController;
 Route::get('/', [DeckController::class, 'explore'])->name('expl');
 // Route::get('topic/{id}', [TopicController::class, 'show'])->name('topic.show');
 
+Route::get('/lang/{locale}', function ($locale) {
+    if (!in_array($locale, ['en', 'lv'])) {        
+        abort(404);
+    }
+
+    App::setLocale($locale);
+    // Session
+    session()->put('locale', $locale);
+
+    return redirect()->back();
+})->name('lang');
 
 Route::resource('topics', TopicController::class)
     ->only(['index', 'store'])

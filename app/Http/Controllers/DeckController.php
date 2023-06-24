@@ -61,6 +61,9 @@ class DeckController extends Controller
         }
 
         $decks = Deck::filter(request(['search']))
+        ->whereHas('topic', function ($query) {
+            $query->where('is_public', true);
+        })
         ->with('topic.category')
         ->get();
 
