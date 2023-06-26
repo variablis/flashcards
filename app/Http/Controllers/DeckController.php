@@ -96,7 +96,7 @@ class DeckController extends Controller
         return view ('explore', [
             'xcat'=> $groupedDecks,
             'srch' => $s,
-            'cnt' => $decks->count()
+            'cnt' => $decks->count() //for search results
         ]);
 
     }
