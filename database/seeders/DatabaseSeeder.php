@@ -28,8 +28,10 @@ class DatabaseSeeder extends Seeder
             DeckSeeder::class,
         ]);
 
-        \App\Models\Topic::factory(200)->create();
-        \App\Models\Deck::factory(400)->create();
-        \App\Models\Flashcard::factory(2780)->create();
+        \App\Models\User::factory(20)->create();
+
+        \App\Models\Topic::factory(250)->create();
+        \App\Models\Deck::factory(500)->create();
+        \App\Models\Flashcard::factory(4500)->create();
     }
 }

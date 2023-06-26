@@ -26,12 +26,12 @@ class TopicController extends Controller
         $copiedTopic->user_id = auth()->id();
         $copiedTopic->save();
 
-        // Replicate the category relationship
-        $copiedCategory = $originalTopic->category->replicate();
-        $copiedCategory->save();
+        // // Replicate the category relationship
+        // $copiedCategory = $originalTopic->category->replicate();
+        // $copiedCategory->save();
 
         // Associate the copied category with the copied topic
-        $copiedTopic->category()->associate($copiedCategory);
+        $copiedTopic->category()->associate($originalTopic->category);
         $copiedTopic->save();
 
         // Replicate the decks relationship
@@ -48,10 +48,7 @@ class TopicController extends Controller
             }
         }
 
-        // return view ('topics', [
-        //     'xtopics' => $tpcs,
-        // ]);
-
+        return redirect()->route('decks.index');
     }
 
     /**
@@ -82,7 +79,8 @@ class TopicController extends Controller
     public function indexCategory(string $id)
     {
         $cat = Category::findOrFail($id);
-        $tpcs = $cat->topics;
+        $tpcs = $cat->topics()->where('is_public', true)->paginate(10);
+
         return view ('topics', [
             'xtopics' => $tpcs,
         ]);

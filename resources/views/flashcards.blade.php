@@ -1,15 +1,20 @@
 {{-- @auth --}}
 <x-app-layout>
 
-    <div class="flex mx-auto max-w-7xl">
+    {{-- <div class="flex mx-auto max-w-7xl">
 
         <div class="flex-none w-80">
             @include('sidebar', ['attributeName' => $xside, 'attr2' => 'flashcards'])
         </div>
 
-        <div class="flex-auto">
+        <div class="flex-auto"> --}}
 
-        <div class="max-w-4xl p-4 sm:p-6 lg:p-8">
+    @include('sidebar', ['attributeName' => $xside, 'attr2' => 'decks'])
+
+    <div class="p-4 sm:ml-96">
+    <div class="mt-14">
+
+        <div class="max-w-5xl p-4 sm:p-6 lg:p-8">
             {{-- <h2 class="text-xl font-bold">My flashcards</h2> --}}
             @if ($xowns)
             <h2 class="text-xl font-bold">My flashcards</h2>
@@ -18,7 +23,7 @@
             @endif
         </div>
 
-        <div class="max-w-4xl p-4">
+        <div class="max-w-5xl p-4">
 
     
     @foreach ($xfc as $d)

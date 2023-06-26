@@ -15,8 +15,8 @@ class DeckSeeder extends Seeder
     public function run(): void
     {
         Deck::create([
-            'title' => 'Default Deck', 
-            'description' => 'Default deck description', 
+            'title' => 'Github komandas', 
+            'description' => 'dažādu github komandu apguve', 
             'progress'=> 0, 
             'count' => 0, 
             'topic_id'=>1,

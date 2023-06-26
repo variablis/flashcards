@@ -39,4 +39,9 @@ class Topic extends Model
             $query->where('title', 'like', '%'.request('search').'%');
         }
     }
+
+    // public function scopePublicTopics($query, $ids){
+    //     return $query->where('is_public', true);
+    // }
+
 }

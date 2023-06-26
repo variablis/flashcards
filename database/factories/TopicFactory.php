@@ -19,7 +19,7 @@ class TopicFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => ucfirst('topic '.fake()->words(rand(1, 7), true)),
+            'title' => ucfirst('topic '.fake()->words(rand(1, 5), true)),
             'description' => ucfirst('topic description '. fake()->words(rand(3, 7), true)),
             'is_public' => fake()->boolean(),
 

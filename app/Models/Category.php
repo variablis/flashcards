@@ -12,4 +12,9 @@ class Category extends Model
     public function topics(){
         return $this->hasMany(Topic::class);
     }
+
+    public function publicTopics()
+    {
+        return $this->hasMany(Topic::class)->where('is_public', true);
+    }
 }
