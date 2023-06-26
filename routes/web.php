@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\DeckController;
 use App\Http\Controllers\FlashcardController;
+use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\App;
 
@@ -64,6 +65,10 @@ Route::get('flashcards/{id}', [FlashcardController::class, 'show'])->name('flash
 Route::put('flashcard/{id}', [FlashcardController::class, 'update'])->name('flashcard.update');
 Route::get('flashcard/create/{id}', [FlashcardController::class, 'create'])->name('flashcard.create');
 
+//admin
+Route::resource('admin', UserController::class)
+    ->only(['index'])
+    ->middleware(['admin']);
 //
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -9,7 +9,7 @@
 
         <div class="flex-auto"> --}}
 
-    @include('sidebar', ['attributeName' => $xside, 'attr2' => 'decks'])
+    @include('sidebar', ['attributeName' => $xside, 'attr2' => 'flashcards'])
 
     <div class="p-4 sm:ml-96">
     <div class="mt-14">

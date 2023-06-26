@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="mx-auto max-w-7xl p-4">
+    <div class="mx-auto max-w-7xl p-4 pt-24">
 
         <div class="pb-4">
             <h2 class="mb-4 text-2xl font-bold">{{ $xtopics->first()->category->name }}</h2>
