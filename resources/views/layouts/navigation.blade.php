@@ -38,7 +38,7 @@
 
         <button type="button" class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
           <span class="sr-only">Open user menu</span>
-          <img class="w-8 h-8 rounded-full" src="https://eu.ui-avatars.com/api/?name={{auth()->user()->name}}&background=random&color=random" alt="">
+          <img class="w-8 h-8 rounded-full" src="{{auth()->user()->avatar}}" alt="">
       </button>
         <!-- Dropdown menu -->
         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
@@ -51,7 +51,14 @@
               <a href="{{route('profile.edit')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">{{ __('Profile') }}</a>
             </li>
             <li>
-              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Log Out</a>
+              <form method="POST" action="{{ route('logout') }}">
+                @csrf
+
+                <a href="{{route('logout')}}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onclick="event.preventDefault(); this.closest('form').submit();">
+                    {{ __('Log Out') }}
+                </a>
+            </form>
+
             </li>
           </ul>
         </div>
@@ -63,18 +70,12 @@
         </x-my-nav-link>
 
         @if (Route::has('register'))
-            {{-- <x-my-nav-link class="hidden md:block" :href="route('register')" :active="request()->routeIs('register')">
-                {{ __('Register') }}
-            </x-my-nav-link> --}}
             <a href="{{route('register')}}" class="hidden md:block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">{{ __('Register') }}</a>
         @endif
        
         @endauth
 
         
-
-
-    
 
         <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
@@ -101,12 +102,12 @@
         </li>
         <li>
             <x-my-nav-link :href="route('decks.index')" :active="request()->routeIs('decks.*')">
-                {{ __('My Decks') }}
+                {{ __('My decks') }}
             </x-my-nav-link>
         </li>
         <li>
             <x-my-nav-link :href="route('flashcards.index')" :active="request()->routeIs('flashcards.*')">
-                {{ __('My Flashcards') }}
+                {{ __('My flashcards') }}
             </x-my-nav-link>
         </li>
 

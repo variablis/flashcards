@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('question');
-            $table->string('answer');
+            $table->string('question', 4000);
+            $table->string('answer', 4000);
             $table->integer('times_viewed')->default(0);
             $table->integer('times_answered')->default(0);
             $table->boolean('last_answer')->default(0);

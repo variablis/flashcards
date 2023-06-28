@@ -24,6 +24,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => Hash::make('123'), // password
+            'avatar' => 'https://gravatar.com/avatar/'.md5( strtolower( trim( fake()->unique()->safeEmail() ) ) ).'?d=identicon',
             'remember_token' => Str::random(10),
         ];
     }

@@ -15,19 +15,18 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Mathematics'], 
-            ['name' => 'Languages'],
-            ['name' => 'Technology and Engineering'],
-            ['name' => 'Science'],
-            ['name' => 'Health and Fitness'],
-            ['name' => 'Business and Finance'],
             ['name' => 'Art'],
+            ['name' => 'Business and finance'],
+            ['name' => 'Food'],
+            ['name' => 'Health and fitness'],
+            ['name' => 'Languages'],
+            ['name' => 'Law'],
+            ['name' => 'Mathematics'],
             ['name' => 'Medical'],
             ['name' => 'Professional'],
-            ['name' => 'Food'],
-            ['name' => 'Law'],
-            
-            ['name' => 'Uncatogarized'],
+            ['name' => 'Science'],
+            ['name' => 'Technology and engineering'],
+            ['name' => 'Other'],
         ];
 
         DB::table('categories')->insert($categories);

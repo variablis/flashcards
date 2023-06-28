@@ -29,7 +29,7 @@ export default {
         'text-2xl',
         'text-3xl',
         {
-          pattern: /(from|to|via)-(rose|emerald|blue)-(500|600|700|800)/,
+          pattern: /(from|to|via)-(blue)-(500|600|700|800)/,
         },
       ],
 

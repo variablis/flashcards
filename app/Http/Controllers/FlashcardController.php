@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 use Illuminate\View\View;
 use App\Models\Topic;
@@ -40,14 +41,18 @@ class FlashcardController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'question' => 'required|string|max:4000',
+            'answer' => 'required|string|max:4000',
+        ]);
+
         $fc = new Flashcard();
-        $fc->question = $request->fc_question;
-        $fc->answer = $request->fc_answer;
+        $fc->question = $request->question;
+        $fc->answer = $request->answer;
         $fc->deck_id = $request->dck_id;
         $fc->save();
 
-        $action = action([FlashcardController::class, 'index']);
-        return redirect($action);
+        return redirect()->route('flashcards.index');
     }
 
     /**
@@ -98,7 +103,8 @@ class FlashcardController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $fc = Flashcard::findOrFail($id);
+        return view('flashcard_edit', ['fc'=>$fc]);
     }
 
     /**
@@ -107,12 +113,26 @@ class FlashcardController extends Controller
     public function update(Request $request, string $id)
     {
         $f = Flashcard::findOrFail($id);
-        $f->times_answered = $request->r_times_answered;
-        $f->times_viewed = $request->r_times_viewed;
-        $f->last_answer = $request->r_last_answer;
-        $f->last_viewed = now()->toDateTimeString();
-        $f->save();
-        // return $id;
+
+        if($request->ajax()){
+            $f->times_answered = $request->r_times_answered;
+            $f->times_viewed = $request->r_times_viewed;
+            $f->last_answer = $request->r_last_answer;
+            $f->last_viewed = now()->toDateTimeString();
+            $f->save();
+
+            return response()->json(['status' => 'success', 'message' => 'Updated successfully'], 200);
+        }
+        else{
+            $f->question = $request->question;
+            $f->answer = $request->answer;
+            $f->times_viewed = $request->times_viewed;
+            $f->last_answer = $request->last_answer;
+            $f->last_viewed = $request->last_viewed;
+            $f->save();
+
+            return redirect()->route('flashcards.index');
+        }
     }
 
     /**
@@ -120,6 +140,10 @@ class FlashcardController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $fc = Flashcard::findOrFail($id);
+        $fc->delete();
+
+        // return redirect()->route('flashcards.index');
+        return redirect()->back();
     }
 }

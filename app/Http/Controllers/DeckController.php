@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
-// use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-
-// use App\Models\User;
 use App\Models\Category;
 use App\Models\Topic;
 use App\Models\Deck;
@@ -19,26 +17,19 @@ use Illuminate\Database\Eloquent\Builder;
 
 class DeckController extends Controller
 {
+
+    /**
+     * Create a copy of resource.
+     */
     public function copy(string $id)
     {
         return $id;
     }
 
-    public function test(string $id)
-    {
-        $tp = Topic::findOrFail($id);
-        $decks = Deck::whereBelongsTo($tp)->get();
-        $cards = Flashcard::whereBelongsTo($decks)->get();
-
-        return view ('decks_test', [
-            'xdata' => $cards->shuffle(),
-        ]);
-    }
-
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index()
     {
         $uu = auth()->user()->topics()->withCount([
             'decks', 
@@ -58,6 +49,9 @@ class DeckController extends Controller
         ]);  
     }
 
+    /**
+     * Display a public list of the resource.
+     */
     public function explore(): View
     {
         // if(Gate::allows('is-admin')){
@@ -78,11 +72,11 @@ class DeckController extends Controller
         ->get();
 
         $decks = $decks->concat($decks1);
+
         $groupedDecks = $decks->groupBy([
             'topic.category.id',
             'topic.id'
         ]);
-
 
         // dd($groupedDecks);
 
@@ -100,13 +94,14 @@ class DeckController extends Controller
         ]);
 
     }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create(string $id)
     {
-        $tpc = Topic::find($id);
-        return view('deck_new', compact('tpc'));
+        $t = Topic::find($id);
+        return view('deck_new', compact('t'));
     }
 
     /**
@@ -114,14 +109,18 @@ class DeckController extends Controller
      */
     public function store(Request $request)
     {
-        $deck = new Deck();
-        $deck->title = $request->dck_title;
-        $deck->description = $request->dck_description;
-        $deck->topic_id = $request->tpc_id;
-        $deck->save();
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'max:255',
+        ]);
 
-        $action = action([DeckController::class, 'index']);
-        return redirect($action);
+        $d = new Deck();
+        $d->title = $request->title;
+        $d->description = $request->description;
+        $d->topic_id = $request->topic_id;
+        $d->save();
+
+        return redirect()->route('decks.index');
     }
 
     /**
@@ -167,7 +166,6 @@ class DeckController extends Controller
             $allTopics=$topic->category->topics->where('is_public', true);
             return view ('decks', [
                 'xtest' => compact('topic'),
-                // 'xtest' => $topic,
                 'xside' => $allTopics,
                 'xowns' =>false,
             ]);
@@ -179,8 +177,10 @@ class DeckController extends Controller
      */
     public function edit(string $id)
     {
-        $dck = Deck::findOrFail($id);
-        return view('deck_edit', ['deck'=>$dck]);
+        $d = Deck::findOrFail($id);
+        $t = auth()->user()->topics;
+
+        return view('deck_edit', ['deck' => $d, 'topics' => $t]);
     }
 
     /**
@@ -188,7 +188,13 @@ class DeckController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $d = Deck::findOrFail($id);
+        $d->title = $request->title;
+        $d->description = $request->description;
+        $d->topic_id = $request->topic_id;
+        $d->save();
+
+        return redirect()->route('decks.index');
     }
 
     /**
@@ -196,8 +202,10 @@ class DeckController extends Controller
      */
     public function destroy(string $id)
     {
-        $dck = Deck::findOrFail($id);
-        $dck->delete();
-        return redirect(action([DeckController::class, 'index']));
+        $d = Deck::findOrFail($id);
+        $d->delete();
+
+        // return redirect()->route('decks.index');
+        return redirect()->back();
     }
 }

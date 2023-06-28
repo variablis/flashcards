@@ -17,8 +17,6 @@ class DeckSeeder extends Seeder
         Deck::create([
             'title' => 'Github komandas', 
             'description' => 'dažādu github komandu apguve', 
-            'progress'=> 0, 
-            'count' => 0, 
             'topic_id'=>1,
             'tag_id'=>1
         ]);

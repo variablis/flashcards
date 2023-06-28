@@ -16,9 +16,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->string('title');
-            $table->string('description');
-            $table->integer('progress')->default(0);
-            $table->integer('count')->nullable();
+            $table->string('description')->nullable();
 
             $table->foreignId('topic_id')->constrained()->cascadeOnDelete();
             $table->foreignId('tag_id')->nullable()->constrained();

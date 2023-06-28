@@ -21,12 +21,8 @@ use Illuminate\Support\Facades\App;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// })->name('welc');
 
 Route::get('/', [DeckController::class, 'explore'])->name('expl');
-// Route::get('topic/{id}', [TopicController::class, 'show'])->name('topic.show');
 
 Route::get('/lang/{locale}', function ($locale) {
     if (!in_array($locale, ['en', 'lv'])) {        
@@ -45,6 +41,7 @@ Route::resource('topics', TopicController::class)
 
 Route::get('topics/{id}', [TopicController::class, 'indexCategory'])->name('topics.indexCategory');
 Route::get('topic/copy/{id}', [TopicController::class, 'copy'])->name('topic.copy')->middleware(['auth']);
+Route::get('topic/test/{id}', [TopicController::class, 'test'])->name('topic.test');
 
 // decks
 Route::resource('decks', DeckController::class)
@@ -52,13 +49,13 @@ Route::resource('decks', DeckController::class)
     ->middleware(['auth']);
 
 Route::get('decks/{id}', [DeckController::class, 'show'])->name('decks.show'); // both aauth and guest
-Route::get('decks/test/{id}', [DeckController::class, 'test'])->name('decks.test');
+// Route::get('decks/test/{id}', [DeckController::class, 'test'])->name('decks.test');
 Route::get('deck/create/{id}', [DeckController::class, 'create'])->name('deck.create');
 Route::get('deck/copy/{id}', [DeckController::class, 'copy'])->name('deck.copy')->middleware(['auth']);
 
 // flashcards
 Route::resource('flashcards', FlashcardController::class)
-    ->only(['index' ,'store'])
+    ->only(['index' ,'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 Route::get('flashcards/{id}', [FlashcardController::class, 'show'])->name('flashcards.show'); // both aauth and guest
@@ -69,6 +66,9 @@ Route::get('flashcard/create/{id}', [FlashcardController::class, 'create'])->nam
 Route::resource('admin', UserController::class)
     ->only(['index'])
     ->middleware(['admin']);
+
+Route::get('/banned', function () { return 'You are banned!'; } )->name('user.banned');
+
 //
 Route::get('/dashboard', function () {
     return view('dashboard');

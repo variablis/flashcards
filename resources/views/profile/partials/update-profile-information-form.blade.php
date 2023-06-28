@@ -47,6 +47,12 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="avatar" :value="__('Avatar URL')" />
+            <x-text-input id="avatar" name="avatar" type="text" class="mt-1 block w-full" :value="old('avatar', $user->avatar)" />
+            <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

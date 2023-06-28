@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 class Deck extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'description', 'progress', 'count'];
+    protected $fillable = ['title', 'description', 'topic_id'];
     
 
     public function flashcards(){

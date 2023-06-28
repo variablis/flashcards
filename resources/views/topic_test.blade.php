@@ -1,28 +1,36 @@
 <x-app-layout>
 
-    <div class="max-w-xl mx-auto p-4 sm:p-6 lg:p-8">
+    <div class="pt-24">
+    <div class="mx-auto md:w-1/2 min-h-full bg-white p-8 rounded-lg shadow-lg">
 
-        <div id="card-block" class="bg-white shadow overflow-hidden sm:rounded-md p-6">
+    {{-- <div class="max-w-xl mx-auto p-4 sm:p-6 lg:p-8"> --}}
+
+        <div id="card-block">
             <div id="card">
                 <div id="q" class="p-6"></div>
                 <hr>
-                <div id="a" class="p-6"></div>
+                <div id="a" class="p-6 mb-4"></div>
             </div>
             
-            <div id="answer-block" style="display: none;">
-                <a id="btn-show" href="#card" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4" >Show Answer</a>
+            <div id="answer-block" class="flex justify-center hidden mt-6">
+                <button id="btn-show" type="button" class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">{{__('Show answer')}}</button>
             </div>
             
-            <div id="next-block" style="display: none;">
-                <x-my-link id="btn-wrong" color="rose" href="#card">Wrong</x-my-link>
-                <x-my-link id="btn-correct" color="emerald" href="#card">Correct</x-my-link>
+            <div id="next-block" class="flex justify-center hidden" >
+                <button id="btn-wrong" type="button" class="text-red-500 hover:text-white border border-red-500 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">{{__('Wrong')}}</button>
+
+                <button id="btn-correct" type="button" class="text-green-500 hover:text-white border border-green-500 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">{{__('Correct')}}</button>
             </div>
         </div>
     
-        <div id="end-block" class="bg-white shadow overflow-hidden sm:rounded-md p-6" style="display: none;">
-            <p class="pb-6">All flashcards reviewed.</p>
-            <x-my-link href="{{ route('decks.index') }}">Back to decks</x-my-link>
+        <div id="end-block" style="hidden">
+            <p class="pb-6 text-center">{{__('All flashcards reviewed.')}}</p>
+            <div class="flex justify-center">
+            <x-my-link href="{{ route('decks.index') }}">{{__('Back to decks')}}</x-my-link>
+            </div>
         </div>
+
+    </div>
     </div>
 
 
@@ -53,7 +61,7 @@
             if (aElement && answerBlockElement && nextBlockElement) {
                 aElement.style.display = 'block';
                 answerBlockElement.style.display = 'none';
-                nextBlockElement.style.display = 'block';
+                nextBlockElement.style.display = 'flex';
             }
         }
     
@@ -71,12 +79,13 @@
             var id = cardid;
             var url = "{{ route('flashcard.update', ':id') }}";
             url = url.replace(':id', id);
-            var token = "{{ $token = csrf_token(); }}";
+            const token = document.querySelector('meta[name="csrf-token"]').content;
 
             fetch(url, {
                 method: "put",
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
+                    'X-Requested-With': 'XMLHttpRequest',
                     'X-CSRF-TOKEN': token
                 },
                 body: JSON.stringify({
@@ -114,12 +123,12 @@
                 qElement.textContent = fdata[idx].question;
                 aElement.textContent = fdata[idx].answer;
                 aElement.style.display = 'none';
-                showBtnElement.style.display = 'block';
-                answerBlockElement.style.display = 'block';
+                showBtnElement.style.display = 'flex';
+                answerBlockElement.style.display = 'flex';
                 nextBlockElement.style.display = 'none';
-                wrongBtnElement.href = '#card';
+                wrongBtnElement.href = '#';
                 wrongBtnElement.onclick = function() { nextCard(0, fdata[idx].id); };
-                correctBtnElement.href = '#card';
+                correctBtnElement.href = '#';
                 correctBtnElement.onclick = function() { nextCard(1, fdata[idx].id); };
                 showBtnElement.onclick = function() { showAnswer(); };
             }

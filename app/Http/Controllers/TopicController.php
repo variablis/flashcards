@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Http\RedirectResponse;
 
 use Illuminate\View\View;
-
-use App\Models\Topic;
 use App\Models\Category;
-// use App\Models\User;
+use App\Models\Topic;
+use App\Models\Deck;
 
 class TopicController extends Controller
 {
+    /**
+     * Create a copy of resource.
+     */
     public function copy(string $id)
     {   
         // Find the original topic by ID with its relationships
@@ -25,10 +26,6 @@ class TopicController extends Controller
         // Save the copied topic with the associated user
         $copiedTopic->user_id = auth()->id();
         $copiedTopic->save();
-
-        // // Replicate the category relationship
-        // $copiedCategory = $originalTopic->category->replicate();
-        // $copiedCategory->save();
 
         // Associate the copied category with the copied topic
         $copiedTopic->category()->associate($originalTopic->category);
@@ -52,9 +49,22 @@ class TopicController extends Controller
     }
 
     /**
+     * Display a flashcard test view.
+     */
+    public function test(string $id)
+    {
+        $topic = Topic::with('decks.flashcards')->findOrFail($id);
+
+        return view('topic_test', [
+            'xdata' => $topic->decks->flatMap(function ($deck) {
+                return $deck->flashcards;
+            })->shuffle(),
+        ]);
+    }
+
+    /**
      * Display a listing of the resource.
      */
-
     public function index()
     {
         // dd($posts = User::find(1)->topics);
@@ -78,12 +88,10 @@ class TopicController extends Controller
 
     public function indexCategory(string $id)
     {
-        $cat = Category::findOrFail($id);
-        $tpcs = $cat->topics()->where('is_public', true)->paginate(10);
+        $c = Category::findOrFail($id);
+        $t = $c->topics()->where('is_public', true)->latest()->paginate(15);
 
-        return view ('topics', [
-            'xtopics' => $tpcs,
-        ]);
+        return view ('topics', ['xtopics' => $t]);
     }
 
     /**
@@ -91,19 +99,18 @@ class TopicController extends Controller
      */
     public function create()
     {
-        // $tpc = Topic::find($id);
-        $cat=Category::all();
-        return view('topic_new', ['cat'=>$cat]);
+        $c = Category::all();
+        return view('topic_new', ['cat' => $c]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'description' => 'string|max:255',
             'category_id' => 'required',
         ]);
  
@@ -114,7 +121,7 @@ class TopicController extends Controller
 
         $request->user()->topics()->create($data);
  
-        return redirect(route('decks.index'));
+        return redirect()->route('decks.index');
     }
 
     /**
@@ -122,10 +129,8 @@ class TopicController extends Controller
      */
     public function show(string $id)
     {
-        $tpc = Topic::findOrFail($id);
-        return view ('topic', [
-            'xtopics' => compact('tpc'),
-        ]);
+        $t = Topic::findOrFail($id);
+        return view ('topic', ['xtopics' => compact('t')]);
     }
 
     /**
@@ -133,8 +138,9 @@ class TopicController extends Controller
      */
     public function edit(string $id)
     {
-        $tpc = Topic::findOrFail($id);
-        return view('topic_edit', ['topic'=>$tpc]);
+        $t = Topic::findOrFail($id);
+        $c = Category::all();
+        return view('topic_edit', ['topic' => $t, 'cat' => $c]);
     }
 
     /**
@@ -142,7 +148,18 @@ class TopicController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $t = Topic::findOrFail($id);
+        $t->title = $request->title;
+        $t->description = $request->description;
+        $t->category_id = $request->category_id;
+        $t->is_public = $request->is_public? 1:0;
+        $t->save();
+
+        if($request->ajax()){
+            return response()->json(['status' => 'success', 'message' => 'Updated successfully'], 200);
+        }else{
+            return redirect()->route('decks.index');
+        }
     }
 
     /**
@@ -152,6 +169,7 @@ class TopicController extends Controller
     {
         $tpc = Topic::findOrFail($id);
         $tpc->delete();
-        return redirect(action([DeckController::class, 'index']));
+        // return redirect()->route('decks.index');
+        return redirect()->back();
     }
 }

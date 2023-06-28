@@ -3,23 +3,23 @@
     @include('sidebar', ['attributeName' => $xside, 'attr2' => 'decks'])
 
     <div class="p-4 sm:ml-96">
-        <div class="mt-14">
+    <div class="mt-14">
 
     <div class="max-w-5xl p-4 sm:p-6 lg:p-8">
 
         @if ($xowns)
-        <h2 class="text-xl font-bold">{{__('My Decks')}}</h2>
+        <h2 class="text-xl font-bold">{{__('My decks')}}</h2>
         @else
         <h2 class="text-xl font-bold">{{__('Explore community decks')}}</h2>
         @endif
 
     </div>
+
     
     <div class="max-w-5xl p-4">
 
         @foreach ($xtest as $topic)
-
-        <div class="bg-white shadow sm:rounded-md p-6 mb-6">
+        <div class="bg-white shadow sm:rounded-md p-6 mb-6 pt-10">
 
             <div class="flex justify-between pb-4">
 
@@ -32,7 +32,7 @@
                 @can('is-owner', $topic)                
 
                 <div class="flex items-center px-6">  
-                    <span class="mx-2 text-sm font-medium text-gray-500 dark:text-gray-300">Public</span>
+                    <span class="mx-2 text-sm font-medium text-gray-500 dark:text-gray-300">{{__('Public')}}</span>
                         
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" value="{{$topic->id}}" class="public_sw sr-only peer" @if ($topic->is_public) checked @endif>
@@ -40,16 +40,16 @@
                     </label>
                 </div>
                 
-                <x-my-topic-dropdown :mydat="$topic->id" />
+                @include('my.topic-dropdown', ['mydat'=>$topic->id])
                 
                 @endcan
 
                 @can('not-owner', $topic)
-                <a href="{{ route('topic.copy', $topic->id ) }}" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 ">{{ __('Copy Topic') }}</a>
+                <a href="{{ route('topic.copy', $topic->id ) }}" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 ">{{ __('Copy topic') }}</a>
                 @endcan
 
             </div>
-        </div>
+            </div>
              
              
             @foreach ($topic->decks as $d)
@@ -61,7 +61,15 @@
                         </a>
                         <p class="text-sm text-gray-500">{{ $d->description }}</p>
                     </div>
-                    <x-my-deck-dropdown :mydat="$d->id" />
+
+                    @can('is-owner', $topic) 
+                        @include('my.deck-dropdown', ['mydat' => $d->id])
+                    @endcan
+
+                    @can('not-owner', $topic)
+                        <a href="{{ route('deck.copy', $d->id ) }}" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 ">{{ __('Copy deck') }}</a>
+                    @endcan
+
                 </div>
 
             @endforeach
@@ -73,15 +81,15 @@
             </div>
             @else
                 @can('is-owner', $topic)
-                <div class="flex justify-between pt-4 text-sm  text-gray-500">
+                <div class="flex justify-between pt-4 text-sm text-gray-400">
                     <div>Flashcards to learn: {{ $topic->flashcards_to_learn }} / {{ $topic->flashcards_count }}
                         @if ( $topic->flashcards_count > 0)
                         <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
-                            <div class="bg-gray-400 h-1.5 rounded-full dark:bg-blue-500" style="width: {{ ($topic->flashcards_count-$topic->flashcards_to_learn)*100/$topic->flashcards_count }}%"></div>
+                            <div class="bg-green-400 h-1.5 rounded-full dark:bg-blue-500" style="width: {{ ($topic->flashcards_count-$topic->flashcards_to_learn)*100/$topic->flashcards_count }}%"></div>
                         </div>
                         @endif
                     </div>
-                    <x-my-link :href="route('decks.test', $topic->id )">{{ __('Test knowledge') }}</x-my-link>
+                    <x-my-link :href="route('topic.test', $topic->id )">{{ __('Test knowledge') }}</x-my-link>
                 </div>
                 @endcan
             @endif
@@ -97,13 +105,41 @@
     <script>
         // Get all checkboxes on the page
         const checkboxes = document.querySelectorAll('input[type="checkbox"].public_sw');
+        const token = document.querySelector('meta[name="csrf-token"]').content;
+        var mydata = @json($xtest);
+
+        function saveToggle(id, chk){
+
+            var fdata = mydata.find(function(el) {
+                return el.id === parseInt(id);
+            });
+
+            // console.log(fdata, parseInt(id));
+
+            var url = "{{ route('topics.update', ':id') }}";
+            url = url.replace(':id', id);
+
+            fetch(url, {
+                method: "put",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({
+                    title: fdata.title,
+                    description: fdata.description,
+                    category_id: fdata.category_id,
+                    is_public: chk? 1:0
+                }),
+            });
+        }
 
         // Attach change event listener to each checkbox
         checkboxes.forEach((checkbox) => {
             checkbox.addEventListener('change', (event) => {
-                // Log the changed value to the console
-                
-                console.log(`Checkbox value changed: ${event.target.value} ${event.target.checked}`);
+                saveToggle(event.target.value, event.target.checked);
+                // console.log(`Checkbox value changed: ${event.target.value} ${event.target.checked}`);
             });
         });
     </script>

@@ -4,15 +4,27 @@
     "Search": "Meklēt",
     "Password": "Parole",
     "Explore": "Katalogs",
-    "My Decks": "Manas Kolekcijas",
+    "My decks": "Manas kolekcijas",
     "Explore community decks": "Atklāt komūnas veidotas kolekcijas",
-    "My Flashcards": "Manas Zibkartiņas",
+    "Explore community flashcards": "Atklāt komūnas veidotas zibkartiņas",
+    "My flashcards": "Manas zibkartiņas",
     "Test knowledge": "Pildīt testu",
-    "Add Deck": "Pievienot kolekciju",
+    "Add deck": "Pievienot kolekciju",
     "Delete": "Dzēst",
     "Edit": "Labot",
     "Save": "Saglabāt",
+    "Update": "Atjaunināt",
 
+    "Search a topic you want to learn...":"Meklēt tēmu, ko mācīties...",
+    
+    "Topic": "Tēma",
+    "Topics": "Tēmas",
+
+    "Show all": "Rādīt visu",
+    "Public":"Publisks",
+    "Show answer": "Rādīt atbildi",
+    "Wrong": "Nepareizi",
+    "Correct": "Pareizi",
 
     "New deck": "Jauna kolekcija",
     "New topic": "Jauna tēma",
@@ -29,7 +41,22 @@
 
     "Explore and start learning!": "Atklāj un sāc mācīties!",
 
-    "Flashcard learning enhances memory retention through active recall, enabling users to reinforce understanding and recall key information more effectively.": "Zibkartiņu mācīšanās uzlabo atmiņas saglabāšanu, izmantojot aktīvu atsaukšanu, ļaujot lietotājiem nostiprināt izpratni un efektīvāk atcerēties galveno informāciju."
+    "Flashcard learning enhances memory retention through active recall, enabling users to reinforce understanding and recall key information more effectively.": "Zibkartiņu mācīšanās uzlabo atmiņas saglabāšanu, izmantojot aktīvu atsaukšanu, ļaujot lietotājiem nostiprināt izpratni un efektīvāk atcerēties galveno informāciju.",
+
+
+    "Art": "Māksla",
+    "Business and finance": "Bizness un finanses",
+    "Food": "Ēdiens",
+    "Health and fitness": "Veselība un fiziskā forma",
+    "Languages": "Valodas",
+    "Law": "Tiesības",
+    "Mathematics": "Matemātika",
+    "Medical": "Medicīna",
+    "Professional": "Profesionāls",
+    "Science": "Zinātne",
+    "Technology and engineering": "Tehnoloģija un inženierzinātne",
+    "Other": "Cits"
+
 
 
 }

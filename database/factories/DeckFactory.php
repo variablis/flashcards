@@ -21,8 +21,6 @@ class DeckFactory extends Factory
         return [
             'title' => ucfirst('deck '. fake()->words(rand(1, 5), true)),
             'description' => ucfirst('deck description '. fake()->words(rand(1, 12), true)),
-            'progress' => fake()->randomNumber(2),
-            'count' => fake()->randomNumber(2),
 
             'topic_id' => Topic::all()->random()->id,
             'tag_id' => Tag::all()->random()->id

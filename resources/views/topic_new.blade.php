@@ -4,7 +4,6 @@
     <div class=" mx-auto md:w-1/2 bg-white p-8 rounded-lg shadow-lg">
     <h1 class="text-lg font-bold mb-4">{{ __('New topic')}}</h1>
 
-
     <form method="POST" action={{ route('topics.store') }}>
         @csrf
 
@@ -16,19 +15,19 @@
 
         <div class="mt-4">
             <x-input-label for="tpc_description" :value="__('Description')" />
-            <x-text-input id="tpc_description" class="block mt-1 w-full" type="text" name="description" :value="old('description')" required autofocus />
+            <x-text-input id="tpc_description" class="block mt-1 w-full" type="text" name="description" :value="old('description')" />
             <x-input-error :messages="$errors->get('description')" class="mt-2" />
         </div>
 
         <div class="mt-4">
-        <x-input-label for="tpc_category" :value="__('Category')" />
-        <select name="category_id" id="tpc_category" class="mt-1 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-        <option value="" selected>{{__('Choose a category')}}</option>
-        @foreach ($cat as $c)
-            <option value="{{$c->id}}">{{$c->name}}</option>
-        @endforeach
-        </select>
-        <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
+            <x-input-label for="tpc_category" :value="__('Category')" />
+            <select name="category_id" id="tpc_category" class="mt-1 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="" selected>{{__('Choose a category')}}</option>
+            @foreach ($cat as $c)
+                <option value="{{$c->id}}">{{$c->name}}</option>
+            @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('category_id')" class="mt-2" />
         </div>
 
         <div class="mt-4 mb-8">
