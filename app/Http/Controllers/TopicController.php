@@ -91,7 +91,9 @@ class TopicController extends Controller
      */
     public function create()
     {
-        //
+        // $tpc = Topic::find($id);
+        $cat=Category::all();
+        return view('topic_new', ['cat'=>$cat]);
     }
 
     /**
@@ -102,11 +104,17 @@ class TopicController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:255',
+            'category_id' => 'required',
         ]);
  
-        $request->user()->topics()->create($validated);
+        $data = [
+            ...$validated,
+            'is_public' => $request->is_public? 1:0
+        ];
+
+        $request->user()->topics()->create($data);
  
-        return redirect(route('topics.index'));
+        return redirect(route('decks.index'));
     }
 
     /**
@@ -125,7 +133,8 @@ class TopicController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $tpc = Topic::findOrFail($id);
+        return view('topic_edit', ['topic'=>$tpc]);
     }
 
     /**
@@ -141,6 +150,8 @@ class TopicController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $tpc = Topic::findOrFail($id);
+        $tpc->delete();
+        return redirect(action([DeckController::class, 'index']));
     }
 }

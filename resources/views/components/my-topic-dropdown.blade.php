@@ -16,14 +16,14 @@
                 {{ __('Add Deck') }}
             </x-dropdown-link>
 
-            <x-dropdown-link :href="route('decks.edit', $mydat)">
+            <x-dropdown-link :href="route('topics.edit', $mydat)">
                 {{ __('Edit') }}
             </x-dropdown-link>
 
-            <form method="POST" action="{{ route('decks.destroy', $mydat) }}">
+            <form method="POST" action="{{ route('topics.destroy', $mydat) }}">
                 @csrf
                 @method('DELETE')
-                <x-dropdown-link :href="route('decks.destroy', $mydat)"
+                <x-dropdown-link :href="route('topics.destroy', $mydat)"
                         onclick="event.preventDefault();
                                     this.closest('form').submit();">
                     {{ __('Delete') }}

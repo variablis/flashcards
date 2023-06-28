@@ -47,7 +47,7 @@ class DeckController extends Controller
                 $query->where('last_viewed', '<', now()->subDays(3))
                 ->orWhere('last_answer','=', false);
             }
-        ])->get();
+        ])->latest()->get();
 
         // dd($uu);
 
@@ -105,7 +105,7 @@ class DeckController extends Controller
      */
     public function create(string $id)
     {
-        $tpc = Topic::find($id)->first();
+        $tpc = Topic::find($id);
         return view('deck_new', compact('tpc'));
     }
 
@@ -146,7 +146,7 @@ class DeckController extends Controller
 
         if($belongsToUser){
 
-            $tpcs = Topic::whereBelongsTo(auth()->user())->get();
+            $tpcs = Topic::whereBelongsTo(auth()->user())->latest()->get();
             $uu = auth()->user()->topics()->where('id', $id)->withCount([
                 'decks', 
                 'flashcards',

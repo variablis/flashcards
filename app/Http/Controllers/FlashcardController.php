@@ -16,7 +16,7 @@ class FlashcardController extends Controller
      */
     public function index(): View
     {
-        $dcks = auth()->user()->decks()->get();
+        $dcks = auth()->user()->decks()->latest()->get();
 
         return view ('flashcards', [
             'xfc' => $dcks,
@@ -30,7 +30,8 @@ class FlashcardController extends Controller
      */
     public function create(string $id)
     {
-        $dck = Deck::find($id)->first();
+        // dd($id);
+        $dck = Deck::find($id);
         return view('flashcard_new', compact('dck'));
     }
 

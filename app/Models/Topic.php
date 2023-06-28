@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Topic extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'description', 'is_public'];
+    protected $fillable = ['title', 'description', 'is_public', 'category_id'];
 
 
     public function decks(){

@@ -5,10 +5,31 @@
     "Password": "Parole",
     "Explore": "Katalogs",
     "My Decks": "Manas Kolekcijas",
+    "Explore community decks": "Atklāt komūnas veidotas kolekcijas",
     "My Flashcards": "Manas Zibkartiņas",
     "Test knowledge": "Pildīt testu",
     "Add Deck": "Pievienot kolekciju",
     "Delete": "Dzēst",
-    "Edit": "Labot"
+    "Edit": "Labot",
+    "Save": "Saglabāt",
+
+
+    "New deck": "Jauna kolekcija",
+    "New topic": "Jauna tēma",
+
+    "Title": "Nosaukums",
+    "Description": "Apraksts",
+    
+    "The :attribute field is required.": "Laukam :attribute jābūt aizpildītam.",
+    "Category": "Kategorija",
+    "Choose a category": "Izvēlēties kategoriju",
+    "Public visibility": "Publiski redzams",
+
+
+
+    "Explore and start learning!": "Atklāj un sāc mācīties!",
+
+    "Flashcard learning enhances memory retention through active recall, enabling users to reinforce understanding and recall key information more effectively.": "Zibkartiņu mācīšanās uzlabo atmiņas saglabāšanu, izmantojot aktīvu atsaukšanu, ļaujot lietotājiem nostiprināt izpratni un efektīvāk atcerēties galveno informāciju."
+
 
 }

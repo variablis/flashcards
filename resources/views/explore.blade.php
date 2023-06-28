@@ -2,8 +2,8 @@
 <div class="mx-auto max-w-7xl p-4 mt-14">
     <div class="mb-8">
 
-    <h1 class="mt-8 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Explore and start learning!</h1>
-    <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl max-w-3xl dark:text-gray-400">Flashcard learning enhances memory retention through active recall, enabling users to reinforce understanding and recall key information more effectively.</p>
+    <h1 class="mt-8 mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">{{__('Explore and start learning!')}}</h1>
+    <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl max-w-3xl dark:text-gray-400">{{__('Flashcard learning enhances memory retention through active recall, enabling users to reinforce understanding and recall key information more effectively.')}}</p>
 
     <form class="flex items-center max-w-3xl">   
         <label for="main-search" class="sr-only">Search</label>

@@ -40,7 +40,7 @@ Route::get('/lang/{locale}', function ($locale) {
 
 // topics
 Route::resource('topics', TopicController::class)
-    ->only(['index','create', 'edit', 'update', 'destroy'])
+    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth']);
 
 Route::get('topics/{id}', [TopicController::class, 'indexCategory'])->name('topics.indexCategory');
@@ -48,7 +48,7 @@ Route::get('topic/copy/{id}', [TopicController::class, 'copy'])->name('topic.cop
 
 // decks
 Route::resource('decks', DeckController::class)
-    ->only(['index','store', 'create', 'edit', 'update', 'destroy'])
+    ->only(['index', 'store', 'create', 'edit', 'update', 'destroy'])
     ->middleware(['auth']);
 
 Route::get('decks/{id}', [DeckController::class, 'show'])->name('decks.show'); // both aauth and guest
@@ -58,7 +58,7 @@ Route::get('deck/copy/{id}', [DeckController::class, 'copy'])->name('deck.copy')
 
 // flashcards
 Route::resource('flashcards', FlashcardController::class)
-    ->only(['index' ,'store', 'create'])
+    ->only(['index' ,'store'])
     ->middleware(['auth', 'verified']);
 
 Route::get('flashcards/{id}', [FlashcardController::class, 'show'])->name('flashcards.show'); // both aauth and guest

@@ -27,7 +27,7 @@
 
     
     @foreach ($xfc as $d)
-    <div class="bg-white shadow overflow-hidden sm:rounded-md p-6">
+    <div class="bg-white shadow sm:rounded-md p-6">
         <div class="flex justify-between pb-4">
             <h5 class="text-xl font-bold text-gray-400">{{ $d->title }}</h5>
             <a href="{{ route('flashcard.create', $d->id ) }}" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 ">{{ __('Add Flashcard') }}</a>

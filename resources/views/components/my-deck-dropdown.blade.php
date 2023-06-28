@@ -11,6 +11,10 @@
         </x-slot>
 
         <x-slot name="content">
+            <x-dropdown-link :href="route('flashcard.create', $mydat)">
+                {{ __('Add flashcard') }}
+            </x-dropdown-link>
+
             <x-dropdown-link :href="route('decks.edit', $mydat)">
                 {{ __('Edit') }}
             </x-dropdown-link>
