@@ -40,6 +40,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'avatar' => 'https://gravatar.com/avatar/'.md5( strtolower( trim( $request->email ) ) ).'?d=identicon',
         ]);
 
         event(new Registered($user));

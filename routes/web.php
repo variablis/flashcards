@@ -51,7 +51,7 @@ Route::resource('decks', DeckController::class)
     ->middleware(['auth']);
 
 Route::get('decks/{id}', [DeckController::class, 'show'])->name('decks.show'); // both aauth and guest
-Route::get('deck/create/{id}', [DeckController::class, 'create'])->name('deck.create');
+Route::get('deck/create/{id?}', [DeckController::class, 'create'])->name('deck.create');
 Route::get('deck/copy/{id}/{tid}', [DeckController::class, 'copy'])->name('deck.copy')->middleware(['auth']);
 
 // flashcards
@@ -83,9 +83,9 @@ Route::delete('admin/decks', [DecksController::class, 'destroy'])->middleware(['
 Route::get('/banned', function () { return 'You are banned!'; } )->name('user.banned');
 
 //
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

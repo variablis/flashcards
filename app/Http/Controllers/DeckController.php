@@ -118,10 +118,17 @@ class DeckController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(string $id)
+    public function create(string $id=null)
     {
-        $t = Topic::find($id);
-        return view('deck_new', compact('t'));
+        if($id){
+            $t = Topic::find($id);
+            return view('deck_new', ['t' => $t, 'many' => 0]);
+        }
+        else{
+            $t = Topic::where('user_id', auth()->user()->id)->get();
+            return view('deck_new', ['t' => $t, 'many' => 1]);
+        }
+
     }
 
     /**
@@ -132,6 +139,7 @@ class DeckController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'max:255',
+            'topic_id' => 'required'
         ]);
 
         $d = new Deck();
