@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('is_public')->default(0);
 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('category_id')->constrained();
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
         });
     }
 

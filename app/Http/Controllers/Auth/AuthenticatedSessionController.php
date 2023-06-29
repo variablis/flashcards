@@ -36,6 +36,9 @@ class AuthenticatedSessionController extends Controller
             
             return redirect()->route('user.banned');
         }
+        else if(auth()->user()->is_admin) {
+            return redirect()->route('users.index');
+        }
         else{
             return redirect()->intended(RouteServiceProvider::HOME);
         }

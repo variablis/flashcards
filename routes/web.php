@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\DeckController;
 use App\Http\Controllers\FlashcardController;
+
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
 
 use Illuminate\Support\Facades\App;
 
@@ -36,7 +38,7 @@ Route::get('/lang/{locale}', function ($locale) {
 
 // topics
 Route::resource('topics', TopicController::class)
-    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+    ->only(['create', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth']);
 
 Route::get('topics/{id}', [TopicController::class, 'indexCategory'])->name('topics.indexCategory');
@@ -49,9 +51,8 @@ Route::resource('decks', DeckController::class)
     ->middleware(['auth']);
 
 Route::get('decks/{id}', [DeckController::class, 'show'])->name('decks.show'); // both aauth and guest
-// Route::get('decks/test/{id}', [DeckController::class, 'test'])->name('decks.test');
 Route::get('deck/create/{id}', [DeckController::class, 'create'])->name('deck.create');
-Route::get('deck/copy/{id}', [DeckController::class, 'copy'])->name('deck.copy')->middleware(['auth']);
+Route::get('deck/copy/{id}/{tid}', [DeckController::class, 'copy'])->name('deck.copy')->middleware(['auth']);
 
 // flashcards
 Route::resource('flashcards', FlashcardController::class)
@@ -63,9 +64,21 @@ Route::put('flashcard/{id}', [FlashcardController::class, 'update'])->name('flas
 Route::get('flashcard/create/{id}', [FlashcardController::class, 'create'])->name('flashcard.create');
 
 //admin
-Route::resource('admin', UserController::class)
-    ->only(['index'])
+Route::redirect('admin', 'login', 301);
+
+Route::resource('admin/users', UserController::class)
+    ->only(['index', 'edit', 'update', 'destroy'])
     ->middleware(['admin']);
+
+Route::resource('admin/categories', CategoryController::class)
+    ->only(['index', 'create', 'store', 'edit', 'update', 'destroy'])
+    ->middleware(['admin']);
+
+Route::get('admin/topics', [TopicController::class, 'index'])->middleware(['admin'])->name('admin.topics.index');
+Route::delete('admin/topics/{id}', [TopicController::class, 'destroy'])->middleware(['admin'])->name('admin.topics.destroy');
+Route::get('admin/topics/{id}', [TopicController::class, 'indexUser'])->middleware(['admin'])->name('admin.topics.indexUser');
+
+Route::delete('admin/decks', [DecksController::class, 'destroy'])->middleware(['admin'])->name('admin.decks.destroy');
 
 Route::get('/banned', function () { return 'You are banned!'; } )->name('user.banned');
 

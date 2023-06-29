@@ -8,7 +8,11 @@
     <div class="max-w-5xl p-4 sm:p-6 lg:p-8">
 
         @if ($xowns)
-        <h2 class="text-xl font-bold">{{__('My flashcards')}}</h2>
+        <div class="flex justify-between">
+            <h2 class="text-xl font-bold">{{__('My flashcards')}}</h2>
+            <a href="{{ route('deck.create', 0) }}" class="text-grey shadow border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                {{__('New deck')}}</a>
+        </div>
         @else
         <h2 class="text-xl font-bold">{{__('Explore community flashcards')}}</h2>
         @endif
@@ -34,7 +38,7 @@
                 @endcan
 
                 @can('not-owner', $d->topic)
-                <a href="{{ route('deck.copy', $d->topic->id ) }}" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 ">{{ __('Copy deck') }}</a>
+                <a href="{{ route('deck.copy', [$d->id, $d->topic->id] ) }}" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 ">{{ __('Copy deck') }}</a>
                 @endcan
 
             </div>

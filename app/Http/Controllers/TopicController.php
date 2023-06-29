@@ -49,7 +49,7 @@ class TopicController extends Controller
     }
 
     /**
-     * Display a flashcard test view.
+     * Display a flashcard learning test view.
      */
     public function test(string $id)
     {
@@ -67,31 +67,28 @@ class TopicController extends Controller
      */
     public function index()
     {
-        // dd($posts = User::find(1)->topics);
-        // dd(Topic::with('user')->where('user_id', 1)->get());
-        // dd(Category::find(1));
-
-
-        // return view ('topics', [
-        //     // 'xtopics' => Topic::where('user_id', $id)->latest()->get(),
-        //     'xtopics' => Topic::whereBelongsTo(auth()->user())->get(),
-        //     'cc' => Category::all(),
-        // ]);
-
-        // dd(auth()->guest());
-
-        // return view ('welcome', [
-        //     'xcat' => Category::all(),
-        //     'xtopics' => Topic::all(),
-        // ]);
+        $t = Topic::with('decks.flashcards')->paginate(15);
+        return view('admin.topics', ['topics' => $t]);
     }
 
+    /**
+     * Display a listing of the resource.
+     */
+    public function indexUser(string $id)
+    {
+        $t = Topic::with('decks.flashcards')->where('user_id', $id)->paginate(15);
+        return view('admin.topics', ['topics' => $t]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
     public function indexCategory(string $id)
     {
         $c = Category::findOrFail($id);
         $t = $c->topics()->where('is_public', true)->latest()->paginate(15);
 
-        return view ('topics', ['xtopics' => $t]);
+        return view('topics', ['xtopics' => $t]);
     }
 
     /**

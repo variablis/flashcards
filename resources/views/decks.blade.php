@@ -8,7 +8,11 @@
     <div class="max-w-5xl p-4 sm:p-6 lg:p-8">
 
         @if ($xowns)
+        <div class="flex justify-between">
         <h2 class="text-xl font-bold">{{__('My decks')}}</h2>
+        <a href="{{ route('topics.create') }}" class="text-grey shadow border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            {{__('New topic')}}</a>
+        </div>
         @else
         <h2 class="text-xl font-bold">{{__('Explore community decks')}}</h2>
         @endif
@@ -52,22 +56,51 @@
             </div>
              
              
-            @foreach ($topic->decks as $d)
+            @foreach ($topic->decks as $de)
                 
                 <div class="flex justify-between items-center mb-2 p-4 bg-white border border-gray-200 rounded-lg shadow-lg hover:bg-gray-100">
                     <div>
-                        <a href="{{ route('flashcards.show', $d->id) }}" class=" text-lg font-bold tracking-tight text-gray-900">
-                            {{ $d->title }} - {{ $d->flashcards->count() }} cards
+                        <a href="{{ route('flashcards.show', $de->id) }}" class=" text-lg font-bold tracking-tight text-gray-900">
+                            {{ $de->title }} - {{ $de->flashcards->count() }} cards
                         </a>
-                        <p class="text-sm text-gray-500">{{ $d->description }}</p>
+                        <p class="text-sm text-gray-500">{{ $de->description }}</p>
                     </div>
 
                     @can('is-owner', $topic) 
-                        @include('my.deck-dropdown', ['mydat' => $d->id])
+                        @include('my.deck-dropdown', ['mydat' => $de->id])
                     @endcan
 
                     @can('not-owner', $topic)
-                        <a href="{{ route('deck.copy', $d->id ) }}" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 ">{{ __('Copy deck') }}</a>
+                        {{-- <a href="{{ route('deck.copy', $d->id ) }}" class="text-sm bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 ">{{ __('Copy deck') }}</a> --}}
+                        
+
+                        {{-- @include('my.copy-deck-dropdown', ['mydat' => $de->id]); --}}
+
+                        <div class="hidden sm:flex sm:items-center ">
+                            <x-dropdown align="right" width="96">
+                        
+                                <x-slot name="trigger">
+                                    <button class="inline-flex items-center px-3 py-2  text-sm leading-4 font-medium rounded-md text-gray-400  hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                                    </button>
+                                </x-slot>
+    
+                                <x-slot name="content">
+
+                                    <p class="p-4 text-sm font-medium">Choose a topic to copy the deck to</p>
+                                    <hr>
+
+                                    @foreach ( auth()->user()->topics as $t )
+                                    <x-dropdown-link :href="route('deck.copy', ['id' => $de->id, 'tid' => $t->id] )">
+                                        {{$t->title}}
+                                    </x-dropdown-link>
+                                    @endforeach
+ 
+                                </x-slot>
+                        
+                            </x-dropdown>
+                        </div>
+
                     @endcan
 
                 </div>

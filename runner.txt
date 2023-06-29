@@ -2,7 +2,7 @@ composer install
 npm i
 
 php artisan key:generate
-php artisan serve --host=flashcards.localdev --port 80
+php artisan serve --host=flashcards.localdev --port 8080
 
 
 php artisan migrate:fresh --seed

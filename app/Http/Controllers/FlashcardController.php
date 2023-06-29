@@ -15,7 +15,7 @@ class FlashcardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index()
     {
         $dcks = auth()->user()->decks()->latest()->get();
 
@@ -76,7 +76,7 @@ class FlashcardController extends Controller
        
 
         if($belongsToUser){
-            $dcks = auth()->user()->decks()->get();
+            $dcks = auth()->user()->decks()->latest()->get();
             $fc = auth()->user()->decks()->find($id);
 
             return view ('flashcards', [

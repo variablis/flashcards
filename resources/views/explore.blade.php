@@ -37,12 +37,19 @@
         @foreach ($categoryDecks as $topicId => $topicDecks)
 
             
-            <div class="mb-4 bg-white shadow overflow-hidden sm:rounded-md p-6">
-                <div class="mb-4">
-                <a class="text-xl font-bold" href="{{ route('decks.show', $topicDecks->first()->topic->id ) }}">
-                    {{ $topicDecks->first()->topic->title }}: {{ $topicDecks->first()->topic->user->name }} 
-                    - {{ $topicDecks->first()->topic->is_public }}
-                </a>
+            <div class="mb-4 bg-white shadow sm:rounded-md p-6">
+                <div class="flex justify-between mb-4">
+                    <a href="{{ route('decks.show', $topicDecks->first()->topic->id ) }}">
+                        <div>
+                            <p class="text-xl font-bold">{{ $topicDecks->first()->topic->title }}</p>
+                            <p class="text-md">{{ $topicDecks->first()->topic->description }}</p>
+                        </div>
+                    </a>
+                    <div>
+                        {{ $topicDecks->first()->topic->user->name }} 
+                        pub: {{ $topicDecks->first()->topic->is_public }}
+                    </div>
+
                 </div>
                 @foreach ($topicDecks as $deck)
                     <div class="mb-2 bg-white shadow-lg border border-gray-200 overflow-hidden sm:rounded-md p-6">

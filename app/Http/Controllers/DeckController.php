@@ -21,9 +21,27 @@ class DeckController extends Controller
     /**
      * Create a copy of resource.
      */
-    public function copy(string $id)
+    public function copy(string $id, string $tid)
     {
-        return $id;
+        // Find the original topic by ID with its relationships
+        $originalDeck = Deck::with('flashcards')->findOrFail($id);
+
+        // Replicate the original topic
+        $copiedDeck = $originalDeck->replicate();
+
+        // Save the copied topic with the associated user
+        $copiedDeck->topic_id = $tid;
+        $copiedDeck->save();
+
+        // Replicate the flashcards relationship
+        foreach ($originalDeck->flashcards as $originalFlashcard) {
+            $copiedFlashcard = $originalFlashcard->replicate();
+            $copiedFlashcard->deck_id = $copiedDeck->id;
+            $copiedFlashcard->save();
+        }
+
+        // return redirect()->route('decks.index');
+        return redirect()->back();
     }
 
     /**
@@ -52,7 +70,7 @@ class DeckController extends Controller
     /**
      * Display a public list of the resource.
      */
-    public function explore(): View
+    public function explore()
     {
         // if(Gate::allows('is-admin')){
         //     echo 'admins';
@@ -85,6 +103,7 @@ class DeckController extends Controller
         });
 
 
+
         $s=request()->input('search');
     
         return view ('explore', [
@@ -92,6 +111,7 @@ class DeckController extends Controller
             'srch' => $s,
             'cnt' => $decks->count() //for search results
         ]);
+
 
     }
 

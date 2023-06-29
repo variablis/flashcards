@@ -22,7 +22,15 @@
 
         <div class="min-h-screen bg-gray-100">
 
-            @include('layouts.navigation')
+            {{-- {{auth()->user()->is_admin}} --}}
+            @can('is-admin')
+                @include('admin.layouts.navigation')
+            @else
+                @include('layouts.navigation')
+            @endcan
+                
+
+            
 
             <!-- Page Heading -->
             {{-- @if (isset($header))
