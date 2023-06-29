@@ -1,8 +1,12 @@
 <x-app-layout>
 
+    @php
+        $ex = (Str::is('expl.*', Route::currentRouteName() ))? 'expl.':'';
+    @endphp
+
     @if(count($xfc))
 
-    @include('sidebar', ['attributeName' => $xside, 'attr2' => 'flashcards', 'sidename'=>__('Decks')])
+    @include('sidebar', ['attributeName' => $xside, 'attr2' => $ex.'flashcards', 'sidename'=>__('Decks')])
 
     <div class="p-4 sm:ml-96">
     <div class="mt-14">
@@ -37,7 +41,7 @@
             <div class="flex flex-row items-center">
                 @can('is-owner', $d->topic)
 
-                <a href="{{route('flashcard.create', $d->id)}}" class="text-gray-400 hover:text-gray-700 p-1.5">
+                <a href="{{route('flashcards.create', $d->id)}}" class="text-gray-400 hover:text-gray-700 p-1.5">
                 <svg class="w-6 h-6" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
                     <path d="M12,24C5.4,24,0,18.6,0,12S5.4,0,12,0s12,5.4,12,12C24,18.6,18.6,24,12,24z M11.9,2.2c-5.4,0-9.6,4.4-9.6,9.7

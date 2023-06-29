@@ -30,30 +30,29 @@
 
 @if($xcat->isNotEmpty())
 
+    {{-- search results --}}
     @if($srch)
     @foreach ($xcat as $categoryId => $categoryDecks)
         <h2 class="mb-4 text-2xl">{{ $categoryDecks->first()->first()->topic->category->name }}</h2>
 
         @foreach ($categoryDecks as $topicId => $topicDecks)
-
             
             <div class="mb-4 bg-white shadow sm:rounded-md p-6">
                 <div class="flex justify-between mb-4">
-                    <a href="{{ route('decks.show', $topicDecks->first()->topic->id ) }}">
+                    <a href="{{ route('expl.decks.show', $topicDecks->first()->topic->id ) }}">
                         <div>
                             <p class="text-xl font-bold">{{ $topicDecks->first()->topic->title }}</p>
                             <p class="text-md">{{ $topicDecks->first()->topic->description }}</p>
                         </div>
                     </a>
                     <div>
-                        {{ $topicDecks->first()->topic->user->name }} 
-                        pub: {{ $topicDecks->first()->topic->is_public }}
+                        {{ $topicDecks->first()->topic->user->name }}
                     </div>
 
                 </div>
                 @foreach ($topicDecks as $deck)
                     <div class="mb-2 bg-white shadow-lg border border-gray-200 overflow-hidden sm:rounded-md p-6">
-                        <a href="{{ route('flashcards.show', $topicDecks->first()->id ) }}">
+                        <a href="{{ route('expl.flashcards.show', $topicDecks->first()->id ) }}">
                             <p class="text-xl font-bold">{{ $deck->title }}</p>
                             <p>{{ $deck->description }}</p>
                         </a>
@@ -64,8 +63,8 @@
         @endforeach
     @endforeach
 
-    @else
     {{-- not search --}}
+    @else
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
     @foreach ($xcat as $categoryId => $categoryDecks)
     <div class="pb-4">
@@ -81,7 +80,7 @@
         <ul class="mb-4">
         @foreach ($categoryDecks as $topicId => $topicDecks)
             <li>
-                <a class="text-md pb-1 block hover:underline text-gray-500" href="{{ route('decks.show', $topicDecks->first()->topic->id ) }}">
+                <a class="text-md pb-1 block hover:underline text-gray-500" href="{{ route('expl.decks.show', $topicDecks->first()->topic->id ) }}">
                     {{ $topicDecks->first()->topic->title }}
                 </a>
             </li>
@@ -89,7 +88,7 @@
         </ul>
 
         @if ($categoryDecks->first()->first()->topic->category->publicTopics->count()>5)
-            <a class="text-gray-900 border border-gray-300 focus:outline-none hover:bg-gray-200 focus:ring-4 focus:ring-gray-200 font-medium rounded-md text-sm px-2 py-1 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" href="{{ route('topics.indexCategory', $categoryId) }}">{{ __('Show all') }}...</a>
+            <a class="text-gray-900 border border-gray-300 focus:outline-none hover:bg-gray-200 focus:ring-4 focus:ring-gray-200 font-medium rounded-md text-sm px-2 py-1 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" href="{{ route('expl.topics.indexCategory', $categoryId) }}">{{ __('Show all') }}...</a>
         @endif
     </div>
     @endforeach

@@ -96,7 +96,7 @@
         </li>
 
         <li>
-            <x-my-nav-link :href="route('expl')" :active="request()->routeIs('expl')">
+            <x-my-nav-link :href="route('expl')" :active="request()->routeIs('expl*')">
                 {{ __('Explore') }}
             </x-my-nav-link>
         </li>

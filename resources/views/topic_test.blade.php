@@ -77,7 +77,7 @@
             }
 
             var id = cardid;
-            var url = "{{ route('flashcard.update', ':id') }}";
+            var url = "{{ route('flashcards.update', ':id') }}";
             url = url.replace(':id', id);
             const token = document.querySelector('meta[name="csrf-token"]').content;
 

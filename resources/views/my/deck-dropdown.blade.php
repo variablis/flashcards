@@ -9,7 +9,7 @@
 
         <x-slot name="content">
 
-            <x-dropdown-link :href="route('flashcard.create', $mydat)">
+            <x-dropdown-link :href="route('flashcards.create', $mydat)">
                 {{ __('Add flashcard') }}
             </x-dropdown-link>
 

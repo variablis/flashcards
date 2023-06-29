@@ -1,8 +1,12 @@
 <x-app-layout>
 
+    @php
+        $ex = (Str::is('expl.*', Route::currentRouteName() ))? 'expl.':'';
+    @endphp
+
     @if (count($xtest))
 
-    @include('sidebar', ['attributeName' => $xside, 'attr2' => 'decks', 'sidename'=>__('Topics')])
+    @include('sidebar', ['attributeName' => $xside, 'attr2' => $ex.'decks', 'sidename'=>__('Topics')])
 
     <div class="p-4 sm:ml-96">
     <div class="mt-14">
@@ -67,13 +71,12 @@
 
             </div>
             </div>
-             
-             
+
             @foreach ($topic->decks as $de)
                 
                 <div class="flex justify-between items-center mb-2 p-4 bg-white border border-gray-200 rounded-lg shadow-lg hover:bg-gray-100">
                     <div>
-                        <a href="{{ route('flashcards.show', $de->id) }}" class=" text-lg font-bold tracking-tight text-gray-900">
+                        <a href="{{ route($ex.'flashcards.show', $de->id) }}" class=" text-lg font-bold tracking-tight text-gray-900">
                             {{ $de->title }} - {{ $de->flashcards->count() }} cards
                         </a>
                         <p class="text-sm text-gray-500">{{ $de->description }}</p>
