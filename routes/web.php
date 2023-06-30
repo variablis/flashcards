@@ -44,7 +44,7 @@ Route::resource('topics', TopicController::class)
 
 Route::get('topics/copy/{id}', [TopicController::class, 'copy'])->name('topic.copy')->middleware(['auth']);
 Route::get('topics/test/{id}', [TopicController::class, 'test'])->name('topic.test')->middleware(['auth']);
-Route::get('explore/topics/{id}', [TopicController::class, 'indexCategory'])->name('expl.topics.indexCategory');
+Route::get('explore/topics/{id}', [TopicController::class, 'indexCategory'])->name('expl.topics.indexCategory'); // both auth and guest
 
 
 // decks
