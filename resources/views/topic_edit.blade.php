@@ -16,7 +16,7 @@
 
         <div class="mt-4">
             <x-input-label for="tpc_description" :value="__('Description')" />
-            <x-text-input id="tpc_description" class="block mt-1 w-full" type="text" name="description" :value="old('description', $topic->description)" required />
+            <x-text-input id="tpc_description" class="block mt-1 w-full" type="text" name="description" :value="old('description', $topic->description)" />
             <x-input-error :messages="$errors->get('description')" class="mt-2" />
         </div>
 

@@ -107,7 +107,7 @@ class TopicController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'string|max:255',
+            'description' => 'nullable|string|max:255',
             'category_id' => 'required',
         ]);
  
@@ -166,7 +166,13 @@ class TopicController extends Controller
     {
         $tpc = Topic::findOrFail($id);
         $tpc->delete();
-        // return redirect()->route('decks.index');
-        return redirect()->back();
+
+        if(auth()->user()->is_admin){
+            return redirect()->back();
+        }
+        else{
+            return redirect()->route('decks.index');
+        }
+
     }
 }

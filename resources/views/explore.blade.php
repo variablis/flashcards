@@ -105,8 +105,13 @@
    
         <ul class="mb-4">
         @foreach ($categoryDecks->take(5) as $topicId => $topicDecks)
+        @can('is-owner', $topicDecks->first()->topic)
+            @php $ex=''; @endphp
+        @else
+            @php $ex='expl.'; @endphp
+        @endcan
             <li>
-                <a class="text-md pb-1 block hover:underline text-gray-500" href="{{ route('expl.decks.show', $topicDecks->first()->topic->id ) }}">
+                <a class="text-md pb-1 block hover:underline text-gray-500" href="{{ route($ex.'decks.show', $topicDecks->first()->topic->id ) }}">
                     {{ $topicDecks->first()->topic->title }}
                 </a>
             </li>

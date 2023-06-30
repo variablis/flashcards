@@ -142,7 +142,7 @@ class DeckController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'max:255',
+            'description' => 'nullable|string|max:255',
             'topic_id' => 'required'
         ]);
 
