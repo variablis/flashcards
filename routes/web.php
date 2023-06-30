@@ -49,9 +49,10 @@ Route::get('explore/topics/{id}', [TopicController::class, 'indexCategory'])->na
 
 // decks
 Route::resource('decks', DeckController::class)
-    ->only(['index', 'show','store', 'create', 'edit', 'update', 'destroy'])
+    ->only(['index', 'store', 'create', 'edit', 'update', 'destroy'])
     ->middleware(['auth']);
 
+Route::get('decks/{id}', [DeckController::class, 'show'])->name('decks.show')->middleware(['auth']);
 Route::get('decks/create/{id?}', [DeckController::class, 'create'])->name('deck.create')->middleware(['auth']);
 Route::get('decks/copy/{id}/{tid}', [DeckController::class, 'copy'])->name('deck.copy')->middleware(['auth']);
 Route::get('explore/decks/{id}', [DeckController::class, 'show'])->name('expl.decks.show'); // both auth and guest
@@ -59,9 +60,10 @@ Route::get('explore/decks/{id}', [DeckController::class, 'show'])->name('expl.de
 
 // flashcards
 Route::resource('flashcards', FlashcardController::class)
-    ->only(['index' ,'show', 'store', 'edit', 'update', 'destroy'])
-    ->middleware(['auth', 'verified']);
+    ->only(['index' , 'store', 'edit', 'update', 'destroy'])
+    ->middleware(['auth']);
 
+Route::get('flashcards/{id}', [FlashcardController::class, 'show'])->name('flashcards.show')->middleware(['auth']);
 Route::get('flashcards/create/{id}', [FlashcardController::class, 'create'])->name('flashcards.create')->middleware(['auth']);
 Route::get('explore/flashcards/{id}', [FlashcardController::class, 'show'])->name('expl.flashcards.show'); // both auth and guest
 

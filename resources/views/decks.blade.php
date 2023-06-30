@@ -1,7 +1,6 @@
 <x-app-layout>
 
     @php
-        // if($xowns) $ex='';
         $ex = (Str::is('expl.*', Route::currentRouteName() ))? 'expl.':'';
     @endphp
 
