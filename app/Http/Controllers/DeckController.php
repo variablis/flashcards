@@ -72,47 +72,51 @@ class DeckController extends Controller
      */
     public function explore()
     {
-        // if(Gate::allows('is-admin')){
-        //     echo 'admins';
-        // }
-
-        $topics = Topic::filter(request(['search']))
-        ->where('is_public', true)
+        $topics = Topic::where('is_public', true)
+        ->filter(request(['search']))
+        ->filterCat(request('category'))
         ->with('decks')
         ->get();
 
-        $decks1 = $topics->flatMap(function ($topic) {
-            return $topic->decks;
-        });
-
-        $decks = Deck::filter(request(['search']))
-        ->whereRelation('topic', 'is_public', true)
+        $decks = Deck::whereRelation('topic', 'is_public', true)
+        ->filter(request(['search']))
+        ->filterCat(request('category'))
         ->get();
 
-        $decks = $decks->concat($decks1);
+        $sres = 0 + count($topics) + count($decks); 
+
+        $decks1 = $topics->flatMap(function ($t) {
+            return $t->decks;
+        });
+
+        $decks = $decks->merge($decks1);
+
+        // if(request('category')){
+        //     $decks = $decks->whereIn('topic.category.id', request('category'));
+        // }
 
         $groupedDecks = $decks->groupBy([
             'topic.category.id',
             'topic.id'
         ]);
 
+
         // dd($groupedDecks);
 
-        $groupedDecks = $groupedDecks->map(function ($group) {
-            return $group->take(5);
-        });
+        // $groupedDecks = $groupedDecks->map(function ($group) {
+        //     return $group;
+        // });
 
-
+        // dd($groupedDecks);
 
         $s=request()->input('search');
     
         return view ('explore', [
-            'xcat'=> $groupedDecks,
+            'xcat' => $groupedDecks,
             'srch' => $s,
-            'cnt' => $decks->count() //for search results
+            'cnt' => $sres, //for search results
+            'allcat' => Category::all()
         ]);
-
-
     }
 
     /**
@@ -156,13 +160,6 @@ class DeckController extends Controller
      */
     public function show(string $id)
     {
-        // $t =Topic::findOrFail($id);
-
-        // dd($t);
-        // if (Gate::allows('is-owner', [auth()->user(), $t])) {
-        //     echo 'owneris';
-        // }
-
         $belongsToUser=false;
 
         // check if deck belongs to user

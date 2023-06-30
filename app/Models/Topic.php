@@ -35,6 +35,12 @@ class Topic extends Model
         }
     }
 
+    public function scopeFilterCat($query, $filters){
+        if($filters){
+            $query->whereIn('category_id', $filters);
+        }
+    }
+
     // public function scopeFilterByUser($query, User $user){
     //     $query->where('user_id', $user->id);
     // }

@@ -39,7 +39,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('not-owner', function(User $user, Topic $model){
-            return auth()->user() and $model->user_id !== $user->id;
+            return auth()->user() && !$user->is_admin && $model->user_id !== $user->id;
         });
 
     }

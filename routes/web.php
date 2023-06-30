@@ -81,7 +81,7 @@ Route::get('admin/topics', [TopicController::class, 'index'])->middleware(['admi
 Route::delete('admin/topics/{id}', [TopicController::class, 'destroy'])->middleware(['admin'])->name('admin.topics.destroy');
 Route::get('admin/topics/{id}', [TopicController::class, 'indexUser'])->middleware(['admin'])->name('admin.topics.indexUser');
 
-Route::delete('admin/decks', [DecksController::class, 'destroy'])->middleware(['admin'])->name('admin.decks.destroy');
+Route::delete('admin/decks/{id}', [DeckController::class, 'destroy'])->middleware(['admin'])->name('admin.decks.destroy');
 
 Route::get('/banned', function () { return 'You are banned!'; } )->name('user.banned');
 
